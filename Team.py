@@ -3,7 +3,7 @@
 class Team ():
 
     #   Class Attributes
-    WIN = 2
+    WIN = 3
     DRAW = 1
     LOSS = 0
 
@@ -158,7 +158,7 @@ class Team ():
         }
         return [
             self.team_data,
-            'Name: {},\tStrength: {},\tPoints: {},\tWin Matches: {},\tWraw Matches: {},\tLoss Matches: {},\tGoals Scored: {},\tGoals Conceded: {}.'.format(self.name, self.strength, self.point,
+            'Name: {},\tStrength: {},\tPoints: {},\tWin Matches: {},\tDraw Matches: {},\tLoss Matches: {},\tGoals Scored: {},\tGoals Conceded: {}.'.format(self.name, self.strength, self.point,
                                                                                                                                                            self.win_count, self.draw_count, self.loss_count,
                                                                                                                                                            self.goals_scored, self.goals_conceded)
         ]
@@ -171,18 +171,18 @@ class Team ():
     #       Return:         return the the {team object} data in string representation
 
     def __str__(self):
-        return 'Name: {},\tStrength: {},\tPoints: {},\tWin Matches: {},\tWraw Matches: {},\tLoss Matches: {},\tGoals Scored: {},\tGoals Conceded: {}.'.format(self.name, self.strength, self.point,
+        return 'Name: {},\tStrength: {},\tPoints: {},\tWin Matches: {},\tDraw Matches: {},\tLoss Matches: {},\tGoals Scored: {},\tGoals Conceded: {}.'.format(self.name, self.strength, self.point,
                                                                                                                                                            self.win_count, self.draw_count, self.loss_count,
                                                                                                                                                            self.goals_scored, self.goals_conceded)
 
 ##################    Application Test    ##################
-t1 = Team()
-t1.set_name("Alberta")
-t1.set_name("Alberta2")
-t1.set_point(Team.WIN)
-t1.set_point(Team.LOSS)
-t1.set_point(Team.DRAW)
-print (t1)
-print (t1())
-print (t1()[0])
-print (t1()[1])
+# t1 = Team()
+# t1.set_name("Alberta")
+# t1.set_name("Alberta2")
+# t1.set_point(Team.WIN)
+# t1.set_point(Team.LOSS)
+# t1.set_point(Team.DRAW)
+# print (t1)
+# print (t1())
+# print (t1()[0])
+# print (t1()[1])
