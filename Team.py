@@ -24,4 +24,22 @@ class Team ():
     
     def set_point(self, point):
         self.point = point
+    
+    
+    def set_goals_scored(self, goals_scored):
+        self.goals_scored = goals_scored
+    
+    def set_goals_conceded(self, goals_conceded):
+        self.goals_conceded = goals_conceded
+    
+    def set_win_count(self, win_count):
+        self.win_count = win_count
+    
+    def set_lose_count(self, lose_count):
+        self.lose_count = lose_count
+    
+    def set_draw_count(self, draw_count):
+        self.draw_count = draw_count
+    
+    
 
