@@ -3,7 +3,7 @@
 class Team ():
 
     #   Class Attributes
-    WIN = 2
+    WIN = 3
     DRAW = 1
     LOSS = 0
 
@@ -176,13 +176,13 @@ class Team ():
                                                                                                                                                            self.goals_scored, self.goals_conceded)
 
 ##################    Application Test    ##################
-t1 = Team()
-t1.set_name("Alberta")
-t1.set_name("Alberta2")
-t1.set_point(Team.WIN)
-t1.set_point(Team.LOSS)
-t1.set_point(Team.DRAW)
-print (t1)
-print (t1())
-print (t1()[0])
-print (t1()[1])
+# t1 = Team()
+# t1.set_name("Alberta")
+# t1.set_name("Alberta2")
+# t1.set_point(Team.WIN)
+# t1.set_point(Team.LOSS)
+# t1.set_point(Team.DRAW)
+# print (t1)
+# print (t1())
+# print (t1()[0])
+# print (t1()[1])
