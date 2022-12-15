@@ -147,7 +147,7 @@ class Team ():
 
     def __call__(self):
         self.team_data = {
-            "Name": self.name,
+            "NAME": self.name,
             "STRENGTH": self.strength,
             "POINT": self.point,
             "WIN_COUNT": self.win_count,
@@ -158,7 +158,7 @@ class Team ():
         }
         return [
             self.team_data,
-            'Name: {},\tStrength: {},\tPoints: {},\tWin Matches: {},\tWraw Matches: {},\tLoss Matches: {},\tGoals Scored: {},\tGoals Conceded: {}.'.format(self.name, self.strength, self.point,
+            'Name: {},\tStrength: {},\tPoints: {},\tWin Matches: {},\tDraw Matches: {},\tLoss Matches: {},\tGoals Scored: {},\tGoals Conceded: {}.'.format(self.name, self.strength, self.point,
                                                                                                                                                            self.win_count, self.draw_count, self.loss_count,
                                                                                                                                                            self.goals_scored, self.goals_conceded)
         ]
@@ -171,7 +171,7 @@ class Team ():
     #       Return:         return the the {team object} data in string representation
 
     def __str__(self):
-        return 'Name: {},\tStrength: {},\tPoints: {},\tWin Matches: {},\tWraw Matches: {},\tLoss Matches: {},\tGoals Scored: {},\tGoals Conceded: {}.'.format(self.name, self.strength, self.point,
+        return 'Name: {},\tStrength: {},\tPoints: {},\tWin Matches: {},\tDraw Matches: {},\tLoss Matches: {},\tGoals Scored: {},\tGoals Conceded: {}.'.format(self.name, self.strength, self.point,
                                                                                                                                                            self.win_count, self.draw_count, self.loss_count,
                                                                                                                                                            self.goals_scored, self.goals_conceded)
 
