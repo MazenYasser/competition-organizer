@@ -8,9 +8,9 @@ class Team ():
     LOSS = 0
 
     #   Class Constructor
-    def __init__(self):
-        self.name = ''
-        self.strength = 0
+    def __init__(self, name='', strength=0):
+        self.name = name
+        self.strength = strength
         self.point = 0
         self.goals_scored = 0
         self.goals_conceded = 0
@@ -46,7 +46,7 @@ class Team ():
 
     #   method documentation:
     #       Name:           set_point
-    #       Paramenters:    {self} object reference, {point} which will be initialized and modified
+    #       Parameters:    {self} object reference, {point} which will be initialized and modified
     #       Discription:    Set {point} attribute of the passed {team object reference} the passed {point} parameter options
     #           Parameters options: Team.WIN, Team.LOSS, Team.DRAW
     #       Return:         None
@@ -56,7 +56,7 @@ class Team ():
         if point == Team.WIN:
             #   Add value of 2 to {point}
             self.point += Team.WIN
-            #   Incremets the {win_count} value by 1
+            #   Increments the {win_count} value by 1
             self.set_win_count()
 
         #   If team is Drawn and parameter passed is Team.DRAW
@@ -70,7 +70,7 @@ class Team ():
         elif point == Team.LOSS:
             #   no add to {point} value
             self.point += Team.LOSS
-            #   Incremets the {loss_count} value by 1
+            #   Increments the {loss_count} value by 1
             self.set_loss_count()
 
         #   If Passed value is not supported
@@ -79,11 +79,11 @@ class Team ():
 
     #   method documentation:
     #       Name:           set_goals_scored
-    #       Paramenters:    {self} object reference, {goals_scored} which will be initialized and modified
+    #       Parameters:     {self} object reference, {goals_scored} which will be initialized and modified
     #       Discription:    Set {goals_scored} attribute of the passed {team object reference} the passed {goals_scored} parameter options
     #       Return:         None
     def set_goals_scored(self, goals_scored):
-        #   Validation for the passes parameter {goals_scored}
+        #   Validation for the passed parameter {goals_scored}
         if goals_scored >= 0:
             self.goals_scored += goals_scored
         #   If the inserted value is not valid
@@ -92,7 +92,7 @@ class Team ():
 
     #   method documentation:
     #       Name:           set_goals_conceded
-    #       Paramenters:    {self} object reference, {goals_conceded} which will be initialized and modified
+    #       Parameters:     {self} object reference, {goals_conceded} which will be initialized and modified
     #       Discription:    Set {goals_conceded} attribute of the passed {team object reference} the passed {goals_conceded} parameter options
     #       Return:         None
     def set_goals_conceded(self, goals_conceded):
@@ -105,24 +105,24 @@ class Team ():
 
     #   method documentation:
     #       Name:           get_win_count
-    #       Paramenters:    {self} object reference
-    #       Discription:    find and return the {win_count} attribute of the passed {team object reference}
+    #       Parameters:     {self} object reference
+    #       Description:    find and return the {win_count} attribute of the passed {team object reference}
     #       Return:         {win_count} attribute value
     def get_win_count(self):
         return self.win_count
 
     #   method documentation:
     #       Name:           get_loss_count
-    #       Paramenters:    {self} object reference
-    #       Discription:    find and return the {loss_count} attribute of the passed {team object reference}
+    #       Parameters:     {self} object reference
+    #       Description:    find and return the {loss_count} attribute of the passed {team object reference}
     #       Return:         {loss_count} attribute value
     def get_loss_count(self):
         return self.loss_count
 
     #   method documentation:
     #       Name:           get_draw_count
-    #       Paramenters:    {self} object reference
-    #       Discription:    find and return the {draw_count} attribute of the passed {team object reference}
+    #       Parameters:    {self} object reference
+    #       Description:    find and return the {draw_count} attribute of the passed {team object reference}
     #       Return:         {draw_count} attribute value
     def get_draw_count(self):
         return self.draw_count
@@ -141,8 +141,8 @@ class Team ():
 
     #   method documentation:
     #       Name:           __call__
-    #       Paramenters:    {self} object reference
-    #       Discription:    A Dunder function to make the {team object} callable to display all data in about team
+    #       Parameters:    {self} object reference
+    #       Description:    A Dunder function to make the {team object} callable to display all data in about team
     #       Return:         return the list of 2 elements team element 1 is a dectionary of the team data, element 2 is data in string representation
 
     def __call__(self):
@@ -166,14 +166,12 @@ class Team ():
     
     #   method documentation:
     #       Name:           __str__
-    #       Paramenters:    {self} object reference
-    #       Discription:    A Dunder function to print the team data in string representation
-    #       Return:         return the the {team object} data in string representation
+    #       Parameters:    {self} object reference
+    #       Description:    A Dunder function to print the team data in string representation
+    #       Return:         return the {team object name} data in string representation
 
     def __str__(self):
-        return 'Name: {},\tStrength: {},\tPoints: {},\tWin Matches: {},\tDraw Matches: {},\tLoss Matches: {},\tGoals Scored: {},\tGoals Conceded: {}.'.format(self.name, self.strength, self.point,
-                                                                                                                                                           self.win_count, self.draw_count, self.loss_count,
-                                                                                                                                                           self.goals_scored, self.goals_conceded)
+        return self.name
 
 ##################    Application Test    ##################
 # t1 = Team()
