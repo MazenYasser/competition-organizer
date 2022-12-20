@@ -1,6 +1,6 @@
 
 #   Class Implementation
-class Team ():
+class Team:
 
     #   Class Attributes
     WIN = 3
