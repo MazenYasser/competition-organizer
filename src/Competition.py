@@ -1,6 +1,6 @@
 from itertools import permutations, combinations
 
-from Match import Match
+from src.Match import Match
 
 
 class Competition:
