@@ -57,6 +57,7 @@ class TeamGUI:
     #   Service Method
     #   method documentation:
     #       Name:           run_main_window
+    #
     #       Parameters:     {self} object reference
     #       Description:    run the {mainwindow}
     #       Return:         None
