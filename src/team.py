@@ -56,6 +56,7 @@ class Team:
         if point == Team.WIN:
             #   Add value of 2 to {point}
             self.point += Team.WIN
+            
             #   Increments the {win_count} value by 1
             self.set_win_count()
 
@@ -70,6 +71,7 @@ class Team:
         elif point == Team.LOSS:
             #   no add to {point} value
             self.point += Team.LOSS
+
             #   Increments the {loss_count} value by 1
             self.set_loss_count()
 
