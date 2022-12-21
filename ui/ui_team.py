@@ -4,8 +4,6 @@ from tkinter import ttk
 from tkinter import scrolledtext
 from tkinter.messagebox import *
 
-from zope.interface import named
-
 from src.competition import Competition
 from src.team import Team
 class TeamGUI:
