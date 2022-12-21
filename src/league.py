@@ -1,4 +1,4 @@
-from Competition import Competition
+from competition import Competition
 
 
 class League(Competition):
