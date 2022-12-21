@@ -1,6 +1,7 @@
 
 #   Class Implementation
-class Team ():
+
+class Team:
 
     #   Class Attributes
     WIN = 3
@@ -9,7 +10,7 @@ class Team ():
 
     #   Class Constructor
     def __init__(self):
-        self.name = None
+        self.name = ''
         self.strength = 0
         self.point = 0
         self.goals_scored = 0
@@ -17,8 +18,6 @@ class Team ():
         self.win_count = 0
         self.loss_count = 0
         self.draw_count = 0
-    
-    
 
     #   method documentation:
     #       Name:           set_name
@@ -27,7 +26,7 @@ class Team ():
     #       Return:         None
     def set_name(self, name):
         #   Flag to limit modification times to just one time
-        if self.name == None:
+        if self.name == '':
             self.name = name
         #   Notify that team name is initialized and con't be modified
         else:
@@ -129,9 +128,6 @@ class Team ():
     def get_draw_count(self):
         return self.draw_count
 
-    def get_name(self):
-        return self.name
-
     #set the win count manually 
     def set_win_count(self):
         self.win_count += 1
@@ -152,7 +148,8 @@ class Team ():
 
     def __call__(self):
         self.team_data = {
-            "Name": self.name,
+
+            "NAME": self.name,
             "STRENGTH": self.strength,
             "POINT": self.point,
             "WIN_COUNT": self.win_count,
@@ -177,6 +174,7 @@ class Team ():
 
     def __str__(self):
         return self.name
+
 
 ##################    Application Test    ##################
 # t1 = Team()

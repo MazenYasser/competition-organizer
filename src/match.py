@@ -1,21 +1,20 @@
 from src.team import Team
 
-class Match():
-    
+class Match:
+
     #Class attributes
     home_team= Team()
     away_team= Team()
     home_team_goals = 0
     away_team_goals = 0
+
     winner= Team()
     result={}
     
-
     #Class Constructor
     def __init__(self, home_team, away_team):
         self.home_team= home_team
         self.away_team= away_team
-    
     
     #Function documentation
     # Name: set_result
@@ -72,14 +71,15 @@ class Match():
     #Added for showing string representation of class
     def __str__(self):
         return f'{self.home_team}-{self.away_team}'
+
         
         
         
 
 #Driver code
-if __name__=="__main__":
-    match1= Match(home_team='Egypt', away_team='France')
-    match1.set_result(3,2)
-    print(match1.home_team.name)
-    print(match1.away_team.name)
+#if __name__=="__main__":
+#    match1= Match(home_team='Egypt', away_team='France')
+#    match1.set_result(3,2)
+#    print(match1.home_team.name)
+#    print(match1.away_team.name)
 
