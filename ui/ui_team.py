@@ -3,17 +3,24 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import scrolledtext
 from tkinter.messagebox import *
+
+from zope.interface import named
+
+from src.competition import Competition
+from src.team import Team
 class TeamGUI:
     #   Some class attributes for control the GUI flow, fonts, and all added values from GUI
     NATIONAL = 1
     CUP = 2
     font = ("Times New Roman", 25)
     all_teams = []
+    competition = 0
 
     #   Class constructor
     #   >>>Issue new parameter (competition) to fill it with teams
-    def __init__(self, width=1000, height=750, mode=NATIONAL):
+    def __init__(self, width=1000, height=750, mode=NATIONAL, competition):
 
+        TeamGUI.competition=competition
         #   Validate The {mode} of Competition whether it's {NATIONAL}, {CUP}
         if mode == TeamGUI.CUP or mode == TeamGUI.NATIONAL:
             self.mode = mode
@@ -186,46 +193,6 @@ class TeamGUI:
         #   Re-disable Edit mode
         self.scrltxt_summary_data.config(state="disabled")
 
-    #   Core Method
-    #   method documentation:
-    #       Name:           delete_team
-    #       Parameters:     {self} object reference
-    #       Description:    Delete team from Combobox list, Scrolled Text and the class attribute {TeamGUI.all_teams}
-    #       Return:         None
-    def delete_team(self):
-        #   Fetch the team from the current selection of combobox list
-        to_remove = self.combo_choice.get()
-
-        #   Identifier for start scanning the list which contains the team data to delete it
-        index_to_delete = -1
-
-        #   Loop for scanning
-        for i in range(0, len(TeamGUI.all_teams)):
-            #   Check if the team which is needed to be deleted is added before
-            if to_remove == TeamGUI.all_teams[i][0]:
-                index_to_delete+=1
-                #   Show and delete the team which will be deleted
-                print(f"Team {TeamGUI.all_teams[index_to_delete][0]} is Deleted")
-                #   delete the team
-                del TeamGUI.all_teams[index_to_delete]
-                #   update the board
-                self.modify_board()
-                #   delete that team from the combobox list
-                self.delete_team_list(to_remove)
-                #   Show a popup message to verify deletion
-                showinfo(title="Successful Deletion", message="Done !")
-                #   no more loop needed so break the loop
-                break
-
-            #   Check if the team which is needed to be deleted is not found anymore
-            else:
-                #   Increments the identifier {index_to_delete} to test the next item in the list
-                index_to_delete += 1
-        #   Check if the index_to_delete
-        if index_to_delete == len(TeamGUI.all_teams):
-            #   If the loop is ended or the list is empty, just notify the user that is no data to delete
-            showinfo(title="Deletion info", message="No Team to delete")
-
     #   Service Method
     #   method documentation:
     #       Name:           delete_team_list
@@ -269,6 +236,50 @@ class TeamGUI:
         #   Return full string after generating the string representation of the class attribute {TeamGUI.all_teams}
         return data
 
+        #   Core Method
+        #   method documentation:
+        #       Name:           delete_team
+        #       Parameters:     {self} object reference
+        #       Description:    Delete team from Combobox list, Scrolled Text and the class attribute {TeamGUI.all_teams}
+        #       Return:         None
+    def delete_team(self):
+        #   Fetch the team from the current selection of combobox list
+        to_remove = self.combo_choice.get()
+
+        #   Identifier for start scanning the list which contains the team data to delete it
+        index_to_delete = -1
+
+        #   Loop for scanning
+        for i in range(0, len(TeamGUI.all_teams)):
+            #   Check if the team which is needed to be deleted is added before
+            if to_remove == TeamGUI.all_teams[i][0]:
+                index_to_delete += 1
+                #   Show and delete the team which will be deleted
+                print(f"Team {TeamGUI.all_teams[index_to_delete]} is Deleted")
+
+                #   >>> @Issue remove_team()
+                TeamGUI.competition.remove_team(TeamGUI.teams_obj[index_to_delete])
+
+                #   delete the team
+                del TeamGUI.all_teams[index_to_delete]
+
+                #   update the board
+                self.modify_board()
+                #   delete that team from the combobox list
+                self.delete_team_list(to_remove)
+                #   Show a popup message to verify deletion
+                showinfo(title="Successful Deletion", message="Done !")
+                #   no more loop needed so break the loop
+                break
+
+            #   Check if the team which is needed to be deleted is not found anymore
+            else:
+                #   Increments the identifier {index_to_delete} to test the next item in the list
+                index_to_delete += 1
+        #   Check if the index_to_delete
+        if index_to_delete == len(TeamGUI.all_teams):
+            #   If the loop is ended or the list is empty, just notify the user that is no data to delete
+            showinfo(title="Deletion info", message="No Team to delete")
     #   Core Method
     #   method documentation:
     #       Name:           add_team
@@ -278,6 +289,7 @@ class TeamGUI:
     #                       add it as choice in the combobox elements
     #                       then refactor the scrollable textbox with addition the inserted Team data
     #       Return:         None
+
     def add_team(self):
         #   Get the new team name
         name = self.get_name()
@@ -292,6 +304,12 @@ class TeamGUI:
             if self.modify_team_list(name=name, strength=strength):
                 #   Print all fetched data
                 print(f"Team {name}, {strength} is added..")
+
+                #   >>> @Issue Competition add_team()
+                temp_team_data = Team(name=name, strength=strength)
+                TeamGUI.all_teams.append(temp_team_data)
+                TeamGUI.competition.add_team(temp_team_data)
+
                 #   Refactor the Scrollable data with adding the new team data
                 self.modify_board()
                 #   A Popup message for notify the user that the last insertion is valid
@@ -329,9 +347,18 @@ class TeamGUI:
             strength_to_modify = self.get_strength()
 
             #   Check if the new name to modify if found
-            if name_to_modify not in [Team[0] for Team in TeamGUI.all_teams]:
+            if name_to_modify not in [team[0] for team in TeamGUI.all_teams]:
                 #   Get the index of choice in combobox choices to be changed by the new values
                 index_to_modify = combo_choice.index(choice_to_modify)
+
+                #   >>>@Issue Competition remove_team() ?!??!?!?!??!?!
+                TeamGUI.competition.remove_team(TeamGUI.all_teams[index_to_modify])
+
+                #   >>>@Issue Competition add_team()
+                TeamGUI.all_teams[index_to_modify].name = name_to_modify
+                TeamGUI.all_teams[index_to_modify].strength = strength_to_modify
+                TeamGUI.competition.add_team(TeamGUI.all_teams[index_to_modify])
+
                 #   Modify the choice in Combobox
                 combo_choice[index_to_modify] = name_to_modify
                 #   Modify the choice name in the general list
