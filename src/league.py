@@ -1,4 +1,5 @@
 
+
 from src.competition import Competition
 from src.team import Team
 
@@ -44,5 +45,3 @@ class League(Competition):
 # league.add_team(t3)
 #
 # print(league.update_scoreboard())
-
-

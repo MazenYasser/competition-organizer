@@ -18,16 +18,18 @@ class Competition:
     def add_team(self, team):
         """Adds a team to the competition."""
         if team in self.teams:
-            print("{} already exists in the competition.".format(team))
+
+            print("{} already exists in the competition.".format(team.name))
         self.teams.append(team)
-        print("{} has been successfully added to the competition.".format(team))
+        print("{} has been successfully added to the competition.".format(team.name))
 
     def remove_team(self, team):
         """Removes a team participating in the competition."""
         if team not in self.teams:
-            print("{} doesn't exists.".format(team))
+            print("{} doesn't exists.".format(team.name))
         self.teams.remove(team)
-        print("{} has been successfully removed from the competition.".format(team))
+        print("{} has been successfully removed from the competition.".format(team.name))
+
 
     def get_teams(self):
         """Returns teams participating in the competition."""
@@ -45,5 +47,6 @@ class Competition:
             self.matches = [Match(p[0], p[1]) for p in permutations(self.teams, 2)]
         else:
             self.matches = [Match(p[0], p[1]) for p in combinations(self.teams, 2)]
+
 
 

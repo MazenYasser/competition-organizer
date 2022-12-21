@@ -1,5 +1,6 @@
 
 #   Class Implementation
+
 class Team:
 
     #   Class Attributes
@@ -147,6 +148,7 @@ class Team:
 
     def __call__(self):
         self.team_data = {
+
             "NAME": self.name,
             "STRENGTH": self.strength,
             "POINT": self.point,
@@ -171,9 +173,8 @@ class Team:
     #       Return:         return the the {team object} data in string representation
 
     def __str__(self):
-        return 'Name: {},\tStrength: {},\tPoints: {},\tWin Matches: {},\tDraw Matches: {},\tLoss Matches: {},\tGoals Scored: {},\tGoals Conceded: {}.'.format(self.name, self.strength, self.point,
-                                                                                                                                                           self.win_count, self.draw_count, self.loss_count,
-       
+        return self.name
+
 
 ##################    Application Test    ##################
 # t1 = Team()
