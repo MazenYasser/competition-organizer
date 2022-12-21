@@ -9,7 +9,7 @@ class Team ():
 
     #   Class Constructor
     def __init__(self):
-        self.name = ''
+        self.name = None
         self.strength = 0
         self.point = 0
         self.goals_scored = 0
@@ -17,6 +17,8 @@ class Team ():
         self.win_count = 0
         self.loss_count = 0
         self.draw_count = 0
+    
+    
 
     #   method documentation:
     #       Name:           set_name
@@ -25,7 +27,7 @@ class Team ():
     #       Return:         None
     def set_name(self, name):
         #   Flag to limit modification times to just one time
-        if self.name == '':
+        if self.name == None:
             self.name = name
         #   Notify that team name is initialized and con't be modified
         else:
@@ -127,6 +129,9 @@ class Team ():
     def get_draw_count(self):
         return self.draw_count
 
+    def get_name(self):
+        return self.name
+
     #set the win count manually 
     def set_win_count(self):
         self.win_count += 1
@@ -171,9 +176,7 @@ class Team ():
     #       Return:         return the the {team object} data in string representation
 
     def __str__(self):
-        return 'Name: {},\tStrength: {},\tPoints: {},\tWin Matches: {},\tDraw Matches: {},\tLoss Matches: {},\tGoals Scored: {},\tGoals Conceded: {}.'.format(self.name, self.strength, self.point,
-                                                                                                                                                           self.win_count, self.draw_count, self.loss_count,
-                                                                                                                                                           self.goals_scored, self.goals_conceded)
+        return self.name
 
 ##################    Application Test    ##################
 # t1 = Team()

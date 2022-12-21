@@ -1,4 +1,4 @@
-from Team import Team
+from src.team import Team
 
 class Match():
     
@@ -7,13 +7,14 @@ class Match():
     away_team= Team()
     home_team_goals = 0
     away_team_goals = 0
-    winner=''
+    winner= Team()
     result={}
+    
 
     #Class Constructor
     def __init__(self, home_team, away_team):
-        self.home_team.set_name(home_team)
-        self.away_team.set_name(away_team)
+        self.home_team= home_team
+        self.away_team= away_team
     
     
     #Function documentation
@@ -70,14 +71,7 @@ class Match():
 
     #Added for showing string representation of class
     def __str__(self):
-        self.match_data={
-            "Home team": self.home_team.name,
-            "Away team": self.away_team.name,
-            "Home team goals": self.home_team_goals,
-            "Away team goals": self.away_team_goals,
-            "Winner": self.winner.name
-        }
-        return str(self.match_data)
+        return f'{self.home_team}-{self.away_team}'
         
         
         
@@ -86,7 +80,6 @@ class Match():
 if __name__=="__main__":
     match1= Match(home_team='Egypt', away_team='France')
     match1.set_result(3,2)
-    print(match1)
-    print(match1.winner)
-    print(match1.away_team)
+    print(match1.home_team.name)
+    print(match1.away_team.name)
 
