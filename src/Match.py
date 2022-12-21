@@ -1,6 +1,6 @@
-from Team import Team
+from team import Team
 
-class Match():
+class Match:
     
     #Class attributes
     home_team= Team()
