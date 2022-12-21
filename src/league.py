@@ -1,16 +1,31 @@
-from competition import Competition
+
+from src.competition import Competition
+from src.team import Team
+
 
 
 class League(Competition):
     # take scoreboard as a dictionary
     def __init__(self):
         super().__init__()
+        self.scoreboard = []
 
     def update_scoreboard(self):
         """function for updating the scoreboard"""
         # Sort teams list based on points
-        scoreboard = sorted(self.teams, key=lambda element: element.point, reverse=True)
-        return scoreboard
+        sorted_teams = sorted(self.teams, key=lambda element: element.point, reverse=True)
+        for i, team in enumerate(sorted_teams):
+            self.scoreboard.append({
+                'RANK': i + 1,
+                'NAME': team.name,
+                'POINTS': team.point,
+                'GOALS SCORED': team.goals_scored,
+                'GOALS CONCEDED': team.goals_conceded,
+                'WIN': team.win_count,
+                'LOSE': team.loss_count,
+                'DRAW': team.draw_count
+            })
+        return self.scoreboard
 
 
 # t1 = Team()
@@ -28,8 +43,6 @@ class League(Competition):
 # league.add_team(t2)
 # league.add_team(t3)
 #
-# scoreboard = league.update_scoreboard()
-# for team in scoreboard:
-#     print(team)
+# print(league.update_scoreboard())
 
 

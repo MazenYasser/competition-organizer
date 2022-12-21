@@ -1,4 +1,5 @@
-from team import Team
+
+from src.team import Team
 
 class Match:
     
@@ -83,10 +84,10 @@ class Match:
         
 
 #Driver code
-if __name__=="__main__":
-    match1= Match(home_team='Egypt', away_team='France')
-    match1.set_result(3,2)
-    print(match1)
-    print(match1.winner)
-    print(match1.away_team)
+#if __name__=="__main__":
+#    match1= Match(home_team='Egypt', away_team='France')
+#    match1.set_result(3,2)
+#    print(match1)
+#    print(match1.winner)
+#    print(match1.away_team)
 
