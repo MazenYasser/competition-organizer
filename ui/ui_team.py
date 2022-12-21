@@ -11,6 +11,7 @@ class TeamGUI:
     all_teams = []
 
     #   Class constructor
+    #   >>>Issue new parameter (competition) to fill it with teams
     def __init__(self, width=1000, height=750, mode=NATIONAL):
 
         #   Validate The {mode} of Competition whether it's {NATIONAL}, {CUP}
