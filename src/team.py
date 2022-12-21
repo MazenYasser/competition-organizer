@@ -173,7 +173,7 @@ class Team:
     def __str__(self):
         return 'Name: {},\tStrength: {},\tPoints: {},\tWin Matches: {},\tDraw Matches: {},\tLoss Matches: {},\tGoals Scored: {},\tGoals Conceded: {}.'.format(self.name, self.strength, self.point,
                                                                                                                                                            self.win_count, self.draw_count, self.loss_count,
-                                                                                                                                                           self.goals_scored, self.goals_conceded)
+       
 
 ##################    Application Test    ##################
 # t1 = Team()
