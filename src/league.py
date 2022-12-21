@@ -1,5 +1,5 @@
-from src.Competition import Competition
-from src.Team import Team
+from src.competition import Competition
+from src.team import Team
 
 
 class League(Competition):

@@ -1,4 +1,4 @@
-from src.Team import Team
+from src.team import Team
 
 class Match():
     

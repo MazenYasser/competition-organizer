@@ -1,6 +1,6 @@
 from tkinter import *
 from src.league import *
-from src.Team import *
+from src.team import *
 
 t1 = Team()
 t1.set_name("zama")
