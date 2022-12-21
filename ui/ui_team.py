@@ -18,9 +18,9 @@ class TeamGUI:
 
     #   Class constructor
     #   >>>Issue new parameter (competition) to fill it with teams
-    def __init__(self, width=1000, height=750, mode=NATIONAL, competition):
+    def __init__(self, width=1000, height=750, mode=NATIONAL, competition=0):
 
-        TeamGUI.competition=competition
+        TeamGUI.competition = competition
         #   Validate The {mode} of Competition whether it's {NATIONAL}, {CUP}
         if mode == TeamGUI.CUP or mode == TeamGUI.NATIONAL:
             self.mode = mode
