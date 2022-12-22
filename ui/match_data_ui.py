@@ -1,5 +1,5 @@
-import sys
-sys.path.append('D:\Engineering\Fourth Year\Python\Tournament Organizer Project\Competation_Organizer')
+# import sys
+# sys.path.append('D:\Engineering\Fourth Year\Python\Tournament Organizer Project\Competation_Organizer')
 from tkinter import *
 from tkinter import messagebox
 from src.team import Team
@@ -8,20 +8,7 @@ from src.league import League
 from src.competition import Competition
 import re
 
-t1 = Team()
-t1.set_name("zama")
-t1.point = 15
-t2 = Team()
-t2.set_name("ahly")
-t2.point = 20
-t3 = Team()
-t3.set_name("isma")
-t3.point = 10
 
-league = League()
-league.add_team(t1)
-league.add_team(t2)
-league.add_team(t3)
 
 
 # Function documentation:
@@ -128,20 +115,32 @@ def show_league_teams_window(competition):
     competition.generate_matches()
     mainloop()
 
-show_league_teams_window(league)
+#If you want to test the code, run this function
+def test_code():
+    t1 = Team()
+    t1.set_name("zama")
+    t1.point = 15
+    t2 = Team()
+    t2.set_name("ahly")
+    t2.point = 20
+    t3 = Team()
+    t3.set_name("isma")
+    t3.point = 10
 
+    league = League()
+    league.add_team(t1)
+    league.add_team(t2)
+    league.add_team(t3)
+    show_league_teams_window(league)
+
+
+
+#Dumped code
 # listbox_frame.grid()
 # lbl_32.grid(row=0,column=0)
 # group_32.grid(row=1, column=0)
 # league_scroll.grid(row=1, fill=Y)
 # btn_show_matches.grid(row=2, column=0)
-
-
-#Dummy data test
-
-
-
-#Dumped code
 
 # league_teams.geometry("800x600")
 #---------------------------------
