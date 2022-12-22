@@ -8,6 +8,21 @@ from src.league import League
 from src.competition import Competition
 import re
 
+t1 = Team()
+t1.set_name("zama")
+t1.point = 15
+t2 = Team()
+t2.set_name("ahly")
+t2.point = 20
+t3 = Team()
+t3.set_name("isma")
+t3.point = 10
+
+league = League()
+league.add_team(t1)
+league.add_team(t2)
+league.add_team(t3)
+
 
 # Function documentation:
 # name result_check(result) , arguments: result: string in the format --> HomeGoals-AwayGoals
@@ -25,9 +40,9 @@ def result_check(result):
 # name: show_matches(team) , arguments: team : str
 # Description: Takes team name and displays a window that has a listbox containing the team's matches
 
-def show_matches(team):
+def show_matches(competition,team):
     #Intializing the UI
-    team_matches_window= Toplevel(root)
+    team_matches_window= Toplevel()
     matches_frame= Frame(team_matches_window)
     matches_scroll= Scrollbar(matches_frame, orient=VERTICAL)
     team_matches_box= Listbox(matches_frame, yscrollcommand=matches_scroll.set)
@@ -35,10 +50,10 @@ def show_matches(team):
     matches_scroll.config(command=team_matches_box.yview)
     
 
-    btn_add_result= Button(team_matches_window,height=1, text='Modify Match Data', command= lambda x=0: match_result(team_matches_box.get(ANCHOR)))
+    btn_add_result= Button(team_matches_window,height=1, text='Modify Match Data', command= lambda x=0: match_result(competition,team_matches_box.get(ANCHOR)))
 
     #Finding the team's matches in the league matches list and adding them to their own matches listbox
-    all_matches= myLeague.matches
+    all_matches= competition.matches
     current_team_matches= list()
     for i in range(len(all_matches)):
         if (all_matches[i].home_team.name == team or all_matches[i].away_team.name == team):
@@ -57,7 +72,7 @@ def show_matches(team):
 # Description: This function takes the mentioned string, and configures the results as specified by the user in the entry widget 
 # Note: The basis is that the match's Home team and Away team are unique, meaning that no other match will have the same Home team and away team
 
-def match_result(teams):
+def match_result(competition,teams):
     #Initializing the UI
     match_data_window= Toplevel()
     result_frame= Frame(match_data_window)
@@ -77,7 +92,7 @@ def match_result(teams):
     current_teams= teams.split('-')
 
     #Finding the match and setting the button to update the result of that match, then close the window
-    for match in myLeague.matches:
+    for match in competition.matches:
         if (match.home_team.name == current_teams[0] and match.away_team.name == current_teams[1]):
             #Note: To make a lambda function perform multiple functions sequentially, wrap the functions in a list in the body of the lambda function
             # If result_check flag is True, the result is submitted. If result_check flag is False, ...
@@ -86,25 +101,34 @@ def match_result(teams):
             if result_check(txt_result.get()) == True else txt_result.delete(0,END))
             break
     #To see current match info in the console before and after submitting it
+    #Uses __call__() function
     print(match())
 
 #Intializing UI
-root=Tk()
-lbl_league= Label(root,text="League teams")
-listbox_frame= Frame(root)
-league_scroll= Scrollbar(listbox_frame, orient=VERTICAL)
-league= Listbox(listbox_frame, yscrollcommand=league_scroll.set)
+def show_league_teams_window(competition):
 
-league_scroll.config(command=league.yview)
-btn_show_matches= Button(root, text='Show Matches',height=1, command= lambda x=0 : show_matches(league.get(ANCHOR)))
+    league_teams=Toplevel()
+    lbl_league= Label(league_teams,text="League teams")
+    listbox_frame= Frame(league_teams)
+    league_scroll= Scrollbar(listbox_frame, orient=VERTICAL)
+    league= Listbox(listbox_frame, yscrollcommand=league_scroll.set)
 
-lbl_league.pack()
+    league_scroll.config(command=league.yview)
+    btn_show_matches= Button(league_teams, text='Show Matches',height=1, command= lambda x=0 : show_matches(competition,league.get(ANCHOR)))
 
-listbox_frame.pack()
-league_scroll.pack(side=RIGHT, fill=Y)
-league.pack()
+    lbl_league.pack()
 
-btn_show_matches.pack()
+    listbox_frame.pack()
+    league_scroll.pack(side=RIGHT, fill=Y)
+    league.pack()
+ 
+    btn_show_matches.pack()
+    for team in competition.teams:
+        league.insert(END, team.name)
+    competition.generate_matches()
+    mainloop()
+
+show_league_teams_window(league)
 
 # listbox_frame.grid()
 # lbl_32.grid(row=0,column=0)
@@ -114,46 +138,39 @@ btn_show_matches.pack()
 
 
 #Dummy data test
-myLeague= Competition()
-names_list=['Egypt', 'France', 'Germany', 'USA', 'Algeria', 'KSA', 'England', 'UAE', 'Wales','London','Canada']
-for i in range (11):
-    current= Team()
-    current.set_name(names_list[i])
-    myLeague.add_team(current)
-    league.insert(END, current.name)
-myLeague.generate_matches()
-mainloop()
+
+
 
 #Dumped code
 
-# root.geometry("800x600")
+# league_teams.geometry("800x600")
 #---------------------------------
 # To be removed
-# lbls_frame=Frame(root, border=15, borderwidth=10, bg='red')
+# lbls_frame=Frame(league_teams, border=15, borderwidth=10, bg='red')
 # lbl_32= Label(lbls_frame,text="Group 32")
 # lbl_16= Label(lbls_frame,text="Group 16")
 # lbl_8= Label(lbls_frame,text="Group 8")
 # lbl_4= Label(lbls_frame,text="Group 4")
 # lbl_2= Label(lbls_frame,text="Group 2")
 #--------------------------------
-# lbl_16= Label(root,text="Group 16")
-# lbl_8= Label(root,text="Group 8")
-# lbl_4= Label(root,text="Group 4")
-# lbl_2= Label(root,text="Group 2")
+# lbl_16= Label(league_teams,text="Group 16")
+# lbl_8= Label(league_teams,text="Group 8")
+# lbl_4= Label(league_teams,text="Group 4")
+# lbl_2= Label(league_teams,text="Group 2")
 
 #----------------------------------------------------------------
 #To be removed
-# groups_frame= Frame(root, border=15, borderwidth=10, bg='black')
+# groups_frame= Frame(league_teams, border=15, borderwidth=10, bg='black')
 # group_32= Listbox(groups_frame)
 # group_16= Listbox(groups_frame)
 # group_8= Listbox(groups_frame)
 # group_4= Listbox(groups_frame)
 # group_2= Listbox(groups_frame)
 #----------------------------------------------------------------
-# group_16= Listbox(root)
-# group_8= Listbox(root)
-# group_4= Listbox(root)
-# group_2= Listbox(root)
+# group_16= Listbox(league_teams)
+# group_8= Listbox(league_teams)
+# group_4= Listbox(league_teams)
+# group_2= Listbox(league_teams)
 #----------------------------------------------------------------
 # To be removed
 # group_16.bind("<<ListboxSelect>>", func=lambda x=0: show_matches(group_32.get(group_32.curselection())))
