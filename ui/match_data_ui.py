@@ -84,7 +84,7 @@ def match_result(competition,teams):
             #Note: To make a lambda function perform multiple functions sequentially, wrap the functions in a list in the body of the lambda function
             # If result_check flag is True, the result is submitted. If result_check flag is False, ...
             # the function displays an error message, clears the text field and discards the result that was submitted in the wrong format
-            btn_submit_result.configure(command= lambda : [match.set_result(int(txt_result.get()[0]), int(txt_result.get()[2])), match_data_window.destroy()]
+            btn_submit_result.configure(command= lambda : [match.set_result(int(txt_result.get()[0]), int(txt_result.get()[2])), competition.update_scoreboard(), match_data_window.destroy()]
             if result_check(txt_result.get()) == True else txt_result.delete(0,END))
             break
     #To see current match info in the console before and after submitting it

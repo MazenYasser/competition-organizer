@@ -13,6 +13,7 @@ class League(Competition):
 
     def update_scoreboard(self):
         """function for updating the scoreboard"""
+        self.scoreboard = []
         # Sort teams list based on points
         sorted_teams = sorted(self.teams, key=lambda element: element.point, reverse=True)
         for i, team in enumerate(sorted_teams):

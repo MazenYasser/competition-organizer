@@ -5,6 +5,7 @@ from tkinter.messagebox import *
 
 from src.competition import Competition
 from src.team import Team
+from ui.scoreboard import render_scoreboard
 
 
 class TeamGUI:
@@ -27,13 +28,13 @@ class TeamGUI:
         #   Pack and put the initialized widgets on its frames
         self.put_on_frames()
         #   View the main window to be appeared to user
-        self.mainwindow.mainloop()
+        self.team_window.mainloop()
 
     def generate_window(self, width=1000, height=720):
         # creating the team ui windows.
-        self.mainwindow = Toplevel()
-        self.mainwindow.geometry(str(width)+'x'+str(height))
-        self.mainwindow.title("Teams")
+        self.team_window = Toplevel()
+        self.team_window.geometry(str(width) + 'x' + str(height))
+        self.team_window.title("Teams")
 
     def initialize_window(self):
         #     {team_data_frame} part
@@ -62,7 +63,10 @@ class TeamGUI:
         self.add_btn = Button(self.team_data_frame, text="Add", command=lambda: self.add_team(), font=TeamGUI.font)
 
         #   Next Button
-        self.next_btn = Button(self.team_data_frame, text="Next", command=self.next, font=TeamGUI.font)
+        self.next_btn = Button(self.team_data_frame, text="Next", command=lambda x=0: [
+            self.team_window.destroy(),
+            render_scoreboard(self.competition)
+        ], font=TeamGUI.font)
 
         ###     {summary_data_frame} part   ###
         #   Scrolled Text widget
@@ -70,8 +74,8 @@ class TeamGUI:
                                                               state="disabled")
 
     def initialize_frames(self):
-        self.team_data_frame = Frame(self.mainwindow)
-        self.summary_data_frame = Frame(self.mainwindow)
+        self.team_data_frame = Frame(self.team_window)
+        self.summary_data_frame = Frame(self.team_window)
 
     #   Service Method
     #   method documentation:
@@ -258,38 +262,10 @@ class TeamGUI:
             #   Print the error message to console
             print("No element to Modify...")
 
-
     def __call__(self):
         return TeamGUI.all_teams
 
-    def next(self):
-        #   Check the {mode} is NATIONAL
-        if self.mode == TeamGUI.NATIONAL:
-            #   Check if the number of teams is greater than 1
-            if len(TeamGUI.all_teams) > 1:
-                #   A popup message notifies that mission has been done successfully
-                showinfo(title="Done", message=f"All {len(TeamGUI.all_teams)} teams are added")
-                #   Quite the GUI application
-                self.mainwindow.quit()
-            #   Check if the number of teams is not greater than 1
-            else:
-                #   A popup message notifies that the error
-                showerror(title="Total Teams",
-                          message=f"There are an issue in Team number\nNational have {len(TeamGUI.all_teams)} Teams")
 
-        #   Check the {mode} is CUP
-        elif self.mode == TeamGUI.CUP:
-            #   Check if the number of teams is only 32 teams
-            if len(TeamGUI.all_teams) == 32:
-                #   A popup message notifies that mission has been done successfully
-                showinfo(title="Done", message=f"All {len(TeamGUI.all_teams)} teams are added")
-                #   Quite the GUI application
-                self.mainwindow.quit()
-            #   Check if the number of teams is not 32 teams
-            else:
-                #   A popup message notifies that the error
-                showerror(title="Total Teams",
-                          message=f"There are an issue in Team number\nCup have {len(TeamGUI.all_teams)} Teams")
 
 
 def ui_team_test():

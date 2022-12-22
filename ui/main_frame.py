@@ -11,7 +11,6 @@ def create_league():
     team_ui = TeamGUI(competition=league)
 
 
-
 if __name__ == '__main__':
     root = Tk()
 
