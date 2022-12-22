@@ -8,13 +8,16 @@ class Match:
     home_team_goals = 0
     away_team_goals = 0
 
-    winner= Team()
-    result={}
+    winner = Team()
+    result = {}
     
     #Class Constructor
     def __init__(self, home_team, away_team):
-        self.home_team= home_team
-        self.away_team= away_team
+        self.home_team = home_team
+        self.away_team = away_team
+        self.home_team_goals = 0
+        self.away_team_goals = 0
+        self.isPlayed = False
     
     #Function documentation
     # Name: set_result
