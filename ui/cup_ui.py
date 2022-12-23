@@ -17,7 +17,7 @@ def render_next_group(cup: Cup):
         groups_list[i].delete(0,END)
         for team in cup.rounds[i]['teams']:
             groups_list[i].insert(END, team.name)
-    current_list= i
+        current_list = i
 
 
 def to_next_round(cup: Cup):
@@ -232,7 +232,7 @@ def test_code():
 
     show_cup_matches_window(cup)
 
-test_code()
+# test_code()
 
 #Dumped code (To be removed)
 # listbox_frame.grid()

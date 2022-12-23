@@ -4,8 +4,11 @@ from tkinter import scrolledtext
 from tkinter.messagebox import *
 
 from src.competition import Competition
+from src.cup import Cup
+from src.league import League
 from src.team import Team
 from ui.scoreboard import render_scoreboard
+from ui.cup_ui import show_cup_matches_window
 
 
 class TeamGUI:
@@ -63,10 +66,7 @@ class TeamGUI:
         self.add_btn = Button(self.team_data_frame, text="Add", command=lambda: self.add_team(), font=TeamGUI.font)
 
         #   Next Button
-        self.next_btn = Button(self.team_data_frame, text="Next", command=lambda x=0: [
-            self.team_window.destroy(),
-            render_scoreboard(self.competition)
-        ], font=TeamGUI.font)
+        self.next_btn = Button(self.team_data_frame, text="Next", command=self.next_call, font=TeamGUI.font)
 
         ###     {summary_data_frame} part   ###
         #   Scrolled Text widget
@@ -264,6 +264,13 @@ class TeamGUI:
 
     def __call__(self):
         return TeamGUI.all_teams
+
+    def next_call(self):
+        self.team_window.destroy()
+        if isinstance(self.competition, Cup):
+            show_cup_matches_window(self.competition)
+        else:
+            render_scoreboard(self.competition)
 
 
 
