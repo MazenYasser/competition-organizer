@@ -1,80 +1,44 @@
-
 from tkinter import *
 from tkinter import ttk
 from tkinter import scrolledtext
 from tkinter.messagebox import *
+
+from src.competition import Competition
+from src.team import Team
+from ui.scoreboard import render_scoreboard
+
+
 class TeamGUI:
-    #   Some class attributes for control the GUI flow, fonts, and all added values from GUI
-    NATIONAL = 1
-    CUP = 2
+
     font = ("Times New Roman", 25)
-    all_teams = []
 
-    #   Class constructor
-    #   >>>Issue new parameter (competition) to fill it with teams
-    def __init__(self, width=1000, height=750, mode=NATIONAL):
+    def __init__(self, competition, width=1000, height=750):
 
-        #   Validate The {mode} of Competition whether it's {NATIONAL}, {CUP}
-        if mode == TeamGUI.CUP or mode == TeamGUI.NATIONAL:
-            self.mode = mode
-        #   Generate Error indicates that the {mode} is not available
-        else:
-            showerror(title="Competition Type Error", message="Competition type have to be only one of these choices "
-                                                              "!\nCUP, NATIONAL")
-            print("Competition type have to be only one of these choices CUP, NATIONAL")
-            return
-
+        self.competition = competition
         #   call a method to generate window only
         self.generate_window(width=width, height=height)
         #   call a method to generate frames only
-        self.initate_frames()
-
+        self.initialize_frames()
         #   Build all needed variables to fetch the data from the Ui
         self.team_name = StringVar()
         self.team_strength = StringVar()
         self.combo_choice = StringVar()
-
         #   Initialize all widgets Label, Button, Combobox, ScrolledText and so on
-        self.initate_widgets()
-
+        self.initialize_window()
         #   Pack and put the initialized widgets on its frames
         self.put_on_frames()
-
         #   View the main window to be appeared to user
-        self.run_main_window()
+        self.team_window.mainloop()
 
-    #   Core Method
-    #   method documentation:
-    #       Name:           generate_window
-    #       Parameters:     {self} object reference, {width} and {height} with default values 1000, 720
-    #       Description:    Method to generate all necessary windows with flexable geometry
-    #       Return:         None
     def generate_window(self, width=1000, height=720):
-        # creating the application main window.
-        self.mainwindow = Tk()
-        self.mainwindow.geometry(str(width)+'x'+str(height))
-        self.mainwindow.title("Teams")
+        # creating the team ui windows.
+        self.team_window = Toplevel()
+        self.team_window.geometry(str(width) + 'x' + str(height))
+        self.team_window.title("Teams")
 
-    #   Service Method
-    #   method documentation:
-    #       Name:           run_main_window
-    #
-    #       Parameters:     {self} object reference
-    #       Description:    run the {mainwindow}
-    #       Return:         None
-    def run_main_window(self):
-        # Entering the event main loop
-        self.mainwindow.mainloop()
-
-    #   Core Method
-    #   method documentation:
-    #       Name:           initate_widgets
-    #       Parameters:     {self} object reference
-    #       Description:    Build all needed widgets: Labels, Buttons, Combobox and Scrolled Texet
-    #       Return:         None
-    def initate_widgets(self):
-        ###     {team_data_frame} part  ###
-        #   Team {name} part
+    def initialize_window(self):
+        #     {team_data_frame} part
+        # Team {name} part
         self.team_name_lbl = Label(self.team_data_frame, text="Team Name", font=TeamGUI.font)
         self.team_name_entry = Entry(self.team_data_frame, font=TeamGUI.font, textvariable=self.team_name)
 
@@ -84,7 +48,8 @@ class TeamGUI:
 
         #   Team modification part
         self.team_modify_lbl = Label(self.team_data_frame, text="Team To Modify", font=TeamGUI.font)
-        self.team_modify_combobox = ttk.Combobox(self.team_data_frame, values=TeamGUI.all_teams, width=27,
+        teams_names = [team.name for team in self.competition.teams]
+        self.team_modify_combobox = ttk.Combobox(self.team_data_frame, values=teams_names, width=27,
                                                  textvariable=self.combo_choice, state="readonly")
         #   Modification Button
         self.modify_btn = Button(self.team_data_frame, text="Modify", command=lambda: self.modify_team(),
@@ -98,23 +63,19 @@ class TeamGUI:
         self.add_btn = Button(self.team_data_frame, text="Add", command=lambda: self.add_team(), font=TeamGUI.font)
 
         #   Next Button
-        self.next_btn = Button(self.team_data_frame, text="Next", command=self.next, font=TeamGUI.font)
+        self.next_btn = Button(self.team_data_frame, text="Next", command=lambda x=0: [
+            self.team_window.destroy(),
+            render_scoreboard(self.competition)
+        ], font=TeamGUI.font)
 
         ###     {summary_data_frame} part   ###
         #   Scrolled Text widget
         self.scrltxt_summary_data = scrolledtext.ScrolledText(self.summary_data_frame, font=TeamGUI.font,
                                                               state="disabled")
 
-    #   Service Method
-    #   method documentation:
-    #       Name:           initate_frames
-    #       Parameters:     {self} object reference
-    #       Description:    Build all needed widgets: Frames only
-    #       Return:         None
-    def initate_frames(self):
-
-        self.team_data_frame = Frame(self.mainwindow)
-        self.summary_data_frame = Frame(self.mainwindow)
+    def initialize_frames(self):
+        self.team_data_frame = Frame(self.team_window)
+        self.summary_data_frame = Frame(self.team_window)
 
     #   Service Method
     #   method documentation:
@@ -151,29 +112,16 @@ class TeamGUI:
         #   Pack the scrolled text widget on its frame
         self.scrltxt_summary_data.pack(side=RIGHT)
 
-    #   Core Method
-    #   method documentation:
-    #       Name:           modify_team_list
-    #       Parameters:     {self} object reference, name, strength
-    #       Description:    update the combobox list values from which its data is entered before
-    #                       from entry {name}, {strength}
-    #       Return:         True: if the name is unique,
-    #                       False: if it is repeated.
-    def modify_team_list(self, name, strength=0):
-        if name not in self.team_modify_combobox['values']:
-            TeamGUI.all_teams.append([name, strength])
-            self.team_modify_combobox['values'] = [TeamGUI.all_teams[i][0] for i in range(0, len(TeamGUI.all_teams))]
-            return True
-        else:
-            return False
+    def refresh_page(self):
+        self.update_teams_combox()
+        self.modify_board()
 
-    #   Core Method
-    #   method documentation:
-    #       Name:           modify_board
-    #       Parameters:     {self} object reference
-    #       Description:    update the {modify_board} to show all added Teams with its corresponding strength
-    #       Return:         None
+    def update_teams_combox(self):
+        """Updates team_modify_combobox based on competition teams."""
+        self.team_modify_combobox['values'] = [team.name for team in self.competition.teams]
+
     def modify_board(self):
+        """Update summary scrolled text with teams"""
         #   Enable Edit mode
         self.scrltxt_summary_data.config(state="normal")
 
@@ -182,16 +130,22 @@ class TeamGUI:
 
         #   Update the textbox data with the new data which is saved in class attribute {TeamGUI.all_teams}
         self.scrltxt_summary_data.insert(INSERT,
-                                         f"Teams\t\tStrength\n_______________________________\n{self.string_for_board()}")
+                                         f"Teams\t\tStrength"
+                                         f"\n_______________________________\n"
+                                         f"{self.generate_board_data()}")
         #   Re-disable Edit mode
         self.scrltxt_summary_data.config(state="disabled")
 
-    #   Core Method
-    #   method documentation:
-    #       Name:           delete_team
-    #       Parameters:     {self} object reference
-    #       Description:    Delete team from Combobox list, Scrolled Text and the class attribute {TeamGUI.all_teams}
-    #       Return:         None
+    def generate_board_data(self):
+        #   data initially is empty
+        data = ''
+        #   Loop for adding and appending the next team data
+        for team in self.competition.teams:
+            #   Append the next team data to the {data} to be returned
+            data = data + team.name + "\t\t" + str(team.strength) + "\n"
+        #   Return full string after generating the string representation of the class attribute {TeamGUI.all_teams}
+        return data
+
     def delete_team(self):
         #   Fetch the team from the current selection of combobox list
         to_remove = self.combo_choice.get()
@@ -200,114 +154,54 @@ class TeamGUI:
         index_to_delete = -1
 
         #   Loop for scanning
-        for i in range(0, len(TeamGUI.all_teams)):
-            #   Check if the team which is needed to be deleted is added before
-            if to_remove == TeamGUI.all_teams[i][0]:
-                index_to_delete+=1
-                #   Show and delete the team which will be deleted
-                print(f"Team {TeamGUI.all_teams[index_to_delete][0]} is Deleted")
-                #   delete the team
-                del TeamGUI.all_teams[index_to_delete]
-                #   update the board
-                self.modify_board()
-                #   delete that team from the combobox list
-                self.delete_team_list(to_remove)
-                #   Show a popup message to verify deletion
+        for team in self.competition.teams:
+            # Check if the team which is needed to be deleted is added before
+            index_to_delete += 1
+            if to_remove == team.name:
+                # Show and delete the team which will be deleted
+                self.competition.remove_team(team)
+                # refresh page contents
+                self.refresh_page()
+                # Show a popup message to verify deletion
                 showinfo(title="Successful Deletion", message="Done !")
-                #   no more loop needed so break the loop
+                #  no more loop needed so break the loop
                 break
 
-            #   Check if the team which is needed to be deleted is not found anymore
-            else:
-                #   Increments the identifier {index_to_delete} to test the next item in the list
-                index_to_delete += 1
-        #   Check if the index_to_delete
-        if index_to_delete == len(TeamGUI.all_teams):
-            #   If the loop is ended or the list is empty, just notify the user that is no data to delete
+        # Check if the index_to_delete
+        if index_to_delete == len(self.competition.teams):
+            # If the loop is ended or the list is empty, just notify the user that is no data to delete
             showinfo(title="Deletion info", message="No Team to delete")
 
-    #   Service Method
-    #   method documentation:
-    #       Name:           delete_team_list
-    #       Parameters:     {self} object reference, {to_remove}
-    #       Description:    The logic to Delete team from Combobox list
-    #       Return:         None
-    def delete_team_list(self, to_remove):
-        #   copy all combobox values {team_modify_combobox} in a temporary holder {combo_choice}
-        combo_choice = list(self.team_modify_combobox['values'])
-
-        #   Check if the {combo_choice} is not empty
-        if len(combo_choice) > 0:
-            #   Remove the current selection which is saved in {to_remove}
-            combo_choice.remove(to_remove)
-
-            #   Re-assign the {combo_choice} to the combobox choices {team_modify_combobox} after deletion
-            self.team_modify_combobox['values'] = combo_choice
-
-            #   No set of the current selection
-            self.team_modify_combobox.current()
-
-        #   Check if the {combo_choice} is empty
-        else:
-            showerror(title="Deletion Error", message="No element to be Deleted !")
-            print("No element to Delete...")
-
-    #   Service Method
-    #   Core Method
-    #   method documentation:
-    #       Name:           string_for_board
-    #       Parameters:     {self} object reference
-    #       Description:    The logic for convert the class attribute {TeamGUI.all_teams} names and strength into string
-    #       Return:         {data} in string format represents the names and strengths
-    def string_for_board(self):
-        #   data initially is empty
-        data = ''
-        #   Loop for adding and appending the next team data
-        for team_data in TeamGUI.all_teams:
-            #   Append the next team data to the {data} to be returned
-            data = data + team_data[0] + "\t\t" + str(team_data[1]) + "\n"
-        #   Return full string after generating the string representation of the class attribute {TeamGUI.all_teams}
-        return data
-
-    #   Core Method
-    #   method documentation:
-    #       Name:           add_team
-    #       Parameters:     {self} object reference
-    #       Description:    Get a new Team data from Entry {name}, {strength} element and
-    #                       add it to the class attribute {TeamGUI.all_teams} and
-    #                       add it as choice in the combobox elements
-    #                       then refactor the scrollable textbox with addition the inserted Team data
-    #       Return:         None
     def add_team(self):
         #   Get the new team name
-        name = self.get_name()
+        name = self.team_name.get()
         #   Get the new team Strength
-        strength = self.get_strength()
+        strength = self.team_strength_entry.get()
 
-        #   Check the {self.get_strength()} return to validate input
-        #   If the fetched {strength} is valid
-        if strength != -1:
-            #   Add that {team name} as a new option to the list of combobox options
-            #   If that new {team name} is unique
-            if self.modify_team_list(name=name, strength=strength):
-                #   Print all fetched data
-                print(f"Team {name}, {strength} is added..")
-                #   Refactor the Scrollable data with adding the new team data
-                self.modify_board()
-                #   A Popup message for notify the user that the last insertion is valid
-                showinfo(title="Successful Addition", message="Done.")
+        if not self.name_is_valid(name):
+            showerror(title="Add Error", message="The team name is already used!")
+            return
 
-            #   If that new {team name} is used before
-            else:
-                # A Popup message notifies the user that there are an error in the new {team name} field
-                showerror(title="Add Error", message="The team name is already used !")
-                #   Print an error message to user
-                print("Can't add the same name twice")
-        else:
-            # A Popup message notifies the user that there are an error in the new {team strength} field
-            showerror(title="Strength Error", message="The strength index is invalid !")
-            #   Print an error message to user
-            print("Strength Invalid")
+        if not self.strength_is_valid(strength):
+            showerror(title="Add Error", message="Invalid strength!")
+            return
+
+        new_team = Team(name, int(strength))
+        self.competition.add_team(new_team)
+
+        self.refresh_page()
+
+    def name_is_valid(self, name):
+        for team in self.competition.teams:
+            if team.name.lower() == name.lower():
+                return False
+        return True
+
+    def strength_is_valid(self, strength):
+        if not strength.isdecimal():
+            return False
+        return True
+
 
     #   Core Method
     #   method documentation:
@@ -329,9 +223,18 @@ class TeamGUI:
             strength_to_modify = self.get_strength()
 
             #   Check if the new name to modify if found
-            if name_to_modify not in [Team[0] for Team in TeamGUI.all_teams]:
+            if name_to_modify not in [team[0] for team in TeamGUI.all_teams]:
                 #   Get the index of choice in combobox choices to be changed by the new values
                 index_to_modify = combo_choice.index(choice_to_modify)
+
+                #   >>>@Issue Competition remove_team() ?!??!?!?!??!?!
+                TeamGUI.competition.remove_team(TeamGUI.all_teams[index_to_modify])
+
+                #   >>>@Issue Competition add_team()
+                TeamGUI.all_teams[index_to_modify].name = name_to_modify
+                TeamGUI.all_teams[index_to_modify].strength = strength_to_modify
+                TeamGUI.competition.add_team(TeamGUI.all_teams[index_to_modify])
+
                 #   Modify the choice in Combobox
                 combo_choice[index_to_modify] = name_to_modify
                 #   Modify the choice name in the general list
@@ -359,82 +262,13 @@ class TeamGUI:
             #   Print the error message to console
             print("No element to Modify...")
 
-    #   Core Method
-    #   method documentation:
-    #       Name:           get_name
-    #       Parameters:     {self} object reference
-    #       Description:    Get a Team data from Entry {name}
-    #       Return:         {name_data} Team Name in upper case
-    def get_name(self):
-        #   Fetch the new name from the entry {Team name}
-        name_data = self.team_name.get()
-        #   Return the Fetched name from the entry {Team name}
-        return name_data.upper()
-
-    #   Core Method
-    #   method documentation:
-    #       Name:           get_strength
-    #       Parameters:     {self} object reference
-    #       Description:    Get a Team data from Entry {strength},
-    #                       validate the input to ensure that was a numerical values only
-    #       Return:         If valid :{strength_data} Team strength in integer format
-    #                       If not valid : -1
-    def get_strength(self):
-        #   Fetch the new strength from the entry {Team strength}
-        strength_data = self.team_strength.get()
-        #   Check if the fetched {strength} is valid (only integers)
-        if strength_data.isdecimal():
-            #   Return the Fetched strength from the entry {Team strength}
-            return int(strength_data)
-        #   Check if the fetched {strength} is not valid
-        else:
-            #   Return -1 as an indication of invalid strength value
-            return -1
-    #   Service method
-    #   method documentation:
-    #       Name:           __call__
-    #       Parameters:     {self} object reference
-    #       Description:    make the object class as callable
-    #       Return:         None
     def __call__(self):
         return TeamGUI.all_teams
 
-    #   Service method
-    #   method documentation:
-    #       Name:           next
-    #       Parameters:     {self} object reference
-    #       Description:    Ends the GUI application and depending on the object {mode} identifier {mode}: CUP, NATIONAL
-    #       Return:         None
-    def next(self):
-        #   Check the {mode} is NATIONAL
-        if self.mode == TeamGUI.NATIONAL:
-            #   Check if the number of teams is greater than 1
-            if len(TeamGUI.all_teams) > 1:
-                #   A popup message notifies that mission has been done successfully
-                showinfo(title="Done", message=f"All {len(TeamGUI.all_teams)} teams are added")
-                #   Quite the GUI application
-                self.mainwindow.quit()
-            #   Check if the number of teams is not greater than 1
-            else:
-                #   A popup message notifies that the error
-                showerror(title="Total Teams",
-                          message=f"There are an issue in Team number\nNational have {len(TeamGUI.all_teams)} Teams")
-
-        #   Check the {mode} is CUP
-        elif self.mode == TeamGUI.CUP:
-            #   Check if the number of teams is only 32 teams
-            if len(TeamGUI.all_teams) == 32:
-                #   A popup message notifies that mission has been done successfully
-                showinfo(title="Done", message=f"All {len(TeamGUI.all_teams)} teams are added")
-                #   Quite the GUI application
-                self.mainwindow.quit()
-            #   Check if the number of teams is not 32 teams
-            else:
-                #   A popup message notifies that the error
-                showerror(title="Total Teams",
-                          message=f"There are an issue in Team number\nCup have {len(TeamGUI.all_teams)} Teams")
 
 
-##################    Application Test    ##################
-tgui = TeamGUI(width="1500", height="780", mode=TeamGUI.NATIONAL)
-print(tgui())
+
+def ui_team_test():
+    tgui = TeamGUI(width="1500", height="780", mode=TeamGUI.NATIONAL)
+    print(tgui())
+

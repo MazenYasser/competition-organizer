@@ -30,7 +30,6 @@ class Competition:
         self.teams.remove(team)
         print("{} has been successfully removed from the competition.".format(team.name))
 
-
     def get_teams(self):
         """Returns teams participating in the competition."""
         return self.teams

@@ -1,5 +1,5 @@
-import sys
-sys.path.append('D:\Engineering\Fourth Year\Python\Tournament Organizer Project\Competation_Organizer')
+# import sys
+# sys.path.append('D:\Engineering\Fourth Year\Python\Tournament Organizer Project\Competation_Organizer')
 from src.team import Team
 
 class Match:
@@ -84,10 +84,10 @@ class Match:
         
 
 #Driver code
-if __name__=="__main__":
-   match1= Match(home_team='Egypt', away_team='France')
-   match1.set_result(0,0)
-   print(match1.home_team.name)
-   print(match1.away_team.name)
-   print(match1())
+# if __name__=="__main__":
+#    match1= Match(home_team='Egypt', away_team='France')
+#    match1.set_result(0,0)
+#    print(match1.home_team.name)
+#    print(match1.away_team.name)
+#    print(match1())
 
