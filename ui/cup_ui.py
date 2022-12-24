@@ -213,6 +213,7 @@ def show_cup_matches_window(cup: Cup):
 
     btn_show_matches= Button(buttons_frame, text='Show Matches',height=1, command= lambda x=0 : show_matches(cup,groups_list[current_list].get(ANCHOR)))
     btn_next_round= Button(buttons_frame, text='To next round',height=1, command= lambda x=0 : to_next_round(cup))
+
     
     #Placing things on the window
     lbls_frame.grid(row=0,pady=5, columnspan=5)

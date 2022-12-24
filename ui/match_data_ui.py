@@ -35,9 +35,9 @@ def show_matches(competition,team):
     team_matches_box= Listbox(matches_frame, yscrollcommand=matches_scroll.set)
     lbl= Label(team_matches_window,text='{} matches'.format(team))
     matches_scroll.config(command=team_matches_box.yview)
-    
 
-    btn_add_result= Button(team_matches_window,height=1, text='Modify Match Data', command= lambda x=0: match_result(competition,team_matches_box.get(ANCHOR)))
+    btn_add_result = Button(team_matches_window, height=1, text='Modify Match Data'
+                            , command=lambda x=0: match_result(competition, team_matches_box.get(ANCHOR)))
 
     #Finding the team's matches in the league matches list and adding them to their own matches listbox
     all_matches= competition.matches
