@@ -1,6 +1,6 @@
 # import sys
 # sys.path.append('D:\Engineering\Fourth Year\Python\Tournament Organizer Project\Competation_Organizer')
-from src.team import Team
+from core.team import Team
 
 class Match:
 

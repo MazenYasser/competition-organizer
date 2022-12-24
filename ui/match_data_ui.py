@@ -2,10 +2,10 @@
 # sys.path.append('D:\Engineering\Fourth Year\Python\Tournament Organizer Project\Competation_Organizer')
 from tkinter import *
 from tkinter import messagebox
-from src.team import Team
-from src.match import Match
-from src.league import League
-from src.competition import Competition
+from core.team import Team
+from core.match import Match
+from core.league import League
+from core.competition import Competition
 import re
 
 

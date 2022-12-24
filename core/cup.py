@@ -1,7 +1,7 @@
-from src.competition import Competition
+from core.competition import Competition
 from random import shuffle
-from src.match import Match
-from src.team import Team
+from core.match import Match
+from core.team import Team
 
 
 class Cup(Competition):

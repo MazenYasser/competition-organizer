@@ -1,6 +1,6 @@
 from tkinter import *
-from src.league import *
-from src.team import *
+from core.league import *
+from core.team import *
 from ui.match_data_ui import show_league_teams_window
 
 

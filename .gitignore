@@ -1,4 +1,4 @@
 Competation_Organizer.code-workspace
 __init__.py
 tournament_project/
-src/__pycache__
+core/__pycache__

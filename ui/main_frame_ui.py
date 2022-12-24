@@ -1,8 +1,10 @@
 from tkinter import *
-from some_other_frame import render
-from src.league import League
-from src.cup import Cup
-from ui.ui_team import TeamGUI
+
+from core.league import League
+from core.cup import Cup
+from core.worldcup import Worldcup
+
+from ui.team_ui import TeamGUI
 
 FONT = ('', 16)
 
@@ -16,6 +18,12 @@ def create_cup():
     cup = Cup()
     team_ui = TeamGUI(competition=cup)
 
+
+def create_worldcup():
+    worldcup = Worldcup()
+    team_ui = TeamGUI(competition=worldcup)
+
+
 if __name__ == '__main__':
     root = Tk()
 
@@ -25,7 +33,7 @@ if __name__ == '__main__':
 
     league_button = Button(width=35, text='Create League', font=FONT, command=create_league)
     cup_button = Button(width=35, text='Create Cup', font=FONT, command=create_cup)
-    world_cup_button = Button(width=35, text='Create World Cup', font=FONT, command=render)
+    world_cup_button = Button(width=35, text='Create World Cup', font=FONT, command=create_worldcup)
 
     welcome_label.grid(row=0, column=0)
 

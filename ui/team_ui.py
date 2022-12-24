@@ -3,12 +3,14 @@ from tkinter import ttk
 from tkinter import scrolledtext
 from tkinter.messagebox import *
 
-from src.competition import Competition
-from src.cup import Cup
-from src.league import League
-from src.team import Team
-from ui.scoreboard import render_scoreboard
+from core.competition import Competition
+from core.cup import Cup
+from core.league import League
+from core.team import Team
+from core.worldcup import Worldcup
+from ui.scoreboard_ui import render_scoreboard
 from ui.cup_ui import show_cup_matches_window
+from ui.worldcup_ui import render_worldcup_window
 
 
 class TeamGUI:
@@ -269,8 +271,20 @@ class TeamGUI:
         self.team_window.destroy()
         if isinstance(self.competition, Cup):
             show_cup_matches_window(self.competition)
-        else:
+        elif isinstance(self.competition, League):
             render_scoreboard(self.competition)
+        elif isinstance(self.competition, Worldcup):
+            for i in range(32):
+                team = Team()
+                team.set_name(str(i))
+                team.set_strength(i)
+                self.competition.add_team(team)
+            if len(self.competition.teams) != 32:
+                showerror(title="Add Error", message="There should be 32 teams for world cup competition!")
+                return
+            render_worldcup_window(self.competition)
+        else:
+            print('Not a valid competition object.')
 
 
 

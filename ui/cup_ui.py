@@ -2,11 +2,11 @@ import sys
 sys.path.append('D:\Engineering\Fourth Year\Python\Tournament Organizer Project\Competation_Organizer')
 from tkinter import *
 from tkinter import messagebox
-from src.team import Team
-from src.match import Match
-from src.league import League
-from src.competition import Competition
-from src.cup import Cup
+from core.team import Team
+from core.match import Match
+from core.league import League
+from core.competition import Competition
+from core.cup import Cup
 import re
 
 def render_next_group(cup: Cup):
@@ -37,7 +37,8 @@ def to_next_round(cup: Cup):
 
 # Function documentation:
 # name result_check(result) , arguments: result: string in the format --> HomeGoals-AwayGoals
-# Description: This function matches the user submitted result to the regex and returns true if it matches the regex and false otherwise
+# Description: This function matches the user submitted result to the regex and returns true if it matches
+# the regex and false otherwise
 # This flag is to be used later in the function to display an error message
 def result_check(result : str):
     result_format= re.compile('[0-9]+-[0-9]+')
