@@ -9,6 +9,7 @@ CURRENT_LIST = 0
 GROUP_LISTBOX_LIST = []
 GROUP_FRAME_LIST = []
 
+
 def render_next_group(cup: Cup):
     global CURRENT_LIST
     global GROUP_LISTBOX_LIST
@@ -56,7 +57,7 @@ def show_matches(competition: Cup, team):
     :param team: str
     :return:
     """
-    # Intializing UI
+    # Initializing UI
     team_matches_window = Toplevel()
     matches_frame = Frame(team_matches_window)
     matches_scroll = Scrollbar(matches_frame, orient=VERTICAL)
