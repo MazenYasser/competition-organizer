@@ -121,6 +121,12 @@ def match_result(competition, teams):
                                                   int(txt_result.get()[2])),
                                  match_data_window.destroy()] if result_check(competition, txt_result.get()) else
                 txt_result.delete(0, END))
+            match_data_window.bind('<Return>',
+                                   lambda x=0: [match.set_result(int(txt_result.get()[0]),
+                                                int(txt_result.get()[2])),
+                                                match_data_window.destroy()] if result_check(competition,
+                                            txt_result.get()) else
+                                   txt_result.delete(0, END))
             break
     # To see current match info in the console before and after submitting it
     # Uses __call__() function

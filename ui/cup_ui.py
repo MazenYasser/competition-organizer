@@ -4,6 +4,7 @@ from tkinter import messagebox
 from core.team import Team
 from core.cup import Cup
 from ui.match_data_ui import show_matches
+from ui.utils_ui import center_window
 
 CURRENT_LIST = 0
 GROUP_LISTBOX_LIST = []
@@ -22,7 +23,8 @@ def render_next_group(cup: Cup):
 
 
 def to_next_round(cup: Cup):
-    cup.generate_next_round()
+    if not cup.generate_next_round():
+        messagebox.showerror(title='Error', message='All matches in the last round must be played')
     if not cup.isFinished:
         render_next_group(cup)
     else:
@@ -51,6 +53,8 @@ def show_cup_matches_window(cup: Cup):
     # Initializing UI
     cup.start_cup()
     cup_window = Toplevel()
+    cup_window.iconbitmap('icon.ico')
+    cup_window.resizable(False, False)
     cup_window.title('CUP')
     groups_frame = Frame(cup_window)
     buttons_frame = Frame(cup_window)
@@ -85,7 +89,7 @@ def test_code():
     team_names = [f'Team {i}' for i in range(1, 33)]
 
     cup = Cup()
-    for i in range(int(len(team_names) / 1)):
+    for i in range(int(len(team_names) / 16)):
         current = Team(name=team_names[i], strength=i * 2)
         cup.add_team(current)
 

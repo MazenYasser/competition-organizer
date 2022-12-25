@@ -51,7 +51,7 @@ class Cup(Competition):
                 print('All matches in the last round must be played, the match between '
                       '{} vs {} is not yet played.'.format(match.home_team.name,
                                                            match.away_team.name))
-                return
+                return False
 
             if match.away_team == match.home_team_goals:
                 print('Cup match can not be a tie.'
@@ -72,6 +72,7 @@ class Cup(Competition):
             self.generate_round()
         else:
             self.isFinished = True
+        return True
 
     def get_winner(self):
         """Returns cup winner"""

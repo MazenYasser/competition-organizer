@@ -38,6 +38,7 @@ class TeamGUI:
     def generate_window(self, width=400, height=500):
         # creating the team ui windows.
         self.team_window = Toplevel()
+        self.team_window.bind('<Return>', lambda x=0: self.add_team())
         center_window(self.team_window, width, height)
         self.team_window.geometry(str(width) + 'x' + str(height))
         self.team_window.title("Teams")
