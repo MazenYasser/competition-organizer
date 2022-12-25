@@ -2,24 +2,28 @@ import re
 from tkinter import *
 from tkinter import messagebox
 
+from core.cup import Cup
 from core.team import Team
 from core.league import League
 
 
-def result_check(result):
+def result_check(competition, result: str):
     """
     This function matches the user submitted result to the regex and returns true if it matches the regex
     and false otherwise
+    :param competition:
     :param result: str  format --> HomeGoals-AwayGoals
     :return: (TRUE) on regex match
     This flag is to be used later in the function to display an error message
     """
     result_format = re.compile('[0-9]+-[0-9]+')
-    if result_format.match(result) is not None:
-        return True
-    else:
+    if result_format.match(result) is None:
         messagebox.showerror("Format error", "Please enter the match result in the correct format!")
         return False
+    if isinstance(competition, Cup) and result[0] == result[2]:
+        messagebox.showerror("Format error", "Cup match can not end in a draw.")
+        return False
+    return True
 
 
 def show_matches(competition, team):
@@ -40,20 +44,26 @@ def show_matches(competition, team):
     btn_add_result = Button(team_matches_window, height=1, text='ADD RESULT',
                             command=lambda x=0: match_result(competition, team_matches_box.get(ANCHOR)))
 
-    # Finding the team's matches in the league matches list and adding them to their own matches listbox
-    all_matches = competition.matches
-    current_team_matches = list()
-    for i in range(len(all_matches)):
-        if all_matches[i].home_team.name == team or all_matches[i].away_team.name == team:
-            current_team_matches.append(all_matches[i])
-            team_matches_box.insert(i, all_matches[i])
-    
     # Packing things
     lbl.pack()
     matches_frame.pack()
     matches_scroll.pack(side=RIGHT, fill=Y)
     team_matches_box.pack()
     btn_add_result.pack()
+
+    all_matches = []
+
+    # Finding the team's matches in the league matches list and adding them to their own matches listbox
+    if isinstance(competition, League):
+        all_matches = competition.matches
+    elif isinstance(competition, Cup):
+        all_matches = competition.rounds[-1]['matches']
+
+    current_team_matches = list()
+    for i in range(len(all_matches)):
+        if all_matches[i].home_team.name == team or all_matches[i].away_team.name == team:
+            current_team_matches.append(all_matches[i])
+            team_matches_box.insert(i, all_matches[i])
 
 
 def match_result(competition, teams):
@@ -66,7 +76,7 @@ def match_result(competition, teams):
     :return:
     """
     # Initializing the UI
-    match_data_window= Toplevel()
+    match_data_window = Toplevel()
     result_frame = Frame(match_data_window)
     lbl_result = Label(result_frame, text='Result (Home-Away): ')
     txt_result = Entry(result_frame, bd=3)  # HomeGoals-AwayGoals
@@ -82,8 +92,16 @@ def match_result(competition, teams):
     # Extracting team names from the string
     current_teams = teams.split('-')
 
+    if isinstance(competition, League):
+        matches = competition.matches
+    elif isinstance(competition, Cup):
+        matches = competition.rounds[-1]['matches']
+    else:
+        print('Invalid Competition type.')
+        return
+
     # Finding the match and setting the button to update the result of that match, then close the window
-    for match in competition.matches:
+    for match in matches:
         if match.home_team.name == current_teams[0] and match.away_team.name == current_teams[1]:
             # Note: To make a lambda function perform multiple functions sequentially,
             # wrap the functions in a list in the body of the lambda function
@@ -93,8 +111,7 @@ def match_result(competition, teams):
             btn_submit_result.configure(
                 command=lambda: [match.set_result(int(txt_result.get()[0]),
                                                   int(txt_result.get()[2])),
-                                 competition.update_scoreboard(),
-                                 match_data_window.destroy()] if result_check(txt_result.get()) else
+                                 match_data_window.destroy()] if result_check(competition, txt_result.get()) else
                 txt_result.delete(0, END))
             break
     # To see current match info in the console before and after submitting it
@@ -123,7 +140,7 @@ def show_league_teams_window(competition):
     btn_show_matches.pack()
     for team in competition.teams:
         league.insert(END, team.name)
-    # competition.generate_matches()   # TO BE REFACTORED
+    competition.generate_matches()   # TO BE REFACTORED
     mainloop()
 
 # If you want to test the code, run this function
