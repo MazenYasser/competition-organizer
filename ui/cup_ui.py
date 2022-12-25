@@ -4,7 +4,6 @@ from tkinter import messagebox
 from core.team import Team
 from core.cup import Cup
 from ui.match_data_ui import show_matches
-from ui.utils_ui import center_window
 
 CURRENT_LIST = 0
 GROUP_LISTBOX_LIST = []

@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, shuffle
 
 from core.league import League
 from core.cup import Cup
@@ -10,6 +10,7 @@ class Worldcup(Competition):
         super().__init__()
         self.groups = [League() for i in range(8)]
         self.round_16 = Cup()
+        self.is_simulation = False
 
     def groups_draw(self):
         """MAKES THE DRAW AND DIVIDE THE TEAMS INTO 8 GROUPS BASED ON STRENGTH"""
@@ -18,13 +19,21 @@ class Worldcup(Competition):
             return
 
         # Sort team based on strength
-
-        sorted_teams = sorted(self.teams, key=lambda element: element.strength, reverse=True)
+        sorted_teams = self.teams.copy()
+        sorted_teams = sorted(sorted_teams, key=lambda element: element.strength, reverse=True)
+        class_a = sorted_teams[24:].copy()
+        class_b = sorted_teams[16:24].copy()
+        class_c = sorted_teams[8:16].copy()
+        class_d = sorted_teams[:8].copy()
+        shuffle(class_a)
+        shuffle(class_b)
+        shuffle(class_c)
+        shuffle(class_d)
         for i, group in enumerate(self.groups):
-            group.teams.append(sorted_teams[i])
-            group.teams.append(sorted_teams[8+i])
-            group.teams.append(sorted_teams[16+i])
-            group.teams.append(sorted_teams[24+i])
+            group.teams.append(class_a[i])
+            group.teams.append(class_b[i])
+            group.teams.append(class_c[i])
+            group.teams.append(class_d[i])
 
     def groups_stage_completed(self):
         """RETURNS TRUE IF ALL MATCHES IN GROUP STAGE WERE PLAYED"""

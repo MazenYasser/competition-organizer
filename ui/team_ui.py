@@ -214,6 +214,24 @@ class TeamGUI:
         return TeamGUI.all_teams
 
     def next_call(self):
+        if isinstance(self.competition, Worldcup):
+            if len(self.competition.teams) == 0:
+                self.competition.is_simulation = True
+                for i in range(32):
+                    team = Team()
+                    team.set_name(str(i))
+                    team.set_strength(i)
+                    self.competition.add_team(team)
+            if len(self.competition.teams) != 32:
+                showerror(parent=self.team_window, title="Add Error",
+                          message="There should be 32 teams for world cup competition!")
+                return
+            self.competition.groups_draw()
+            for group in self.competition.groups:
+                group.generate_matches()
+            render_worldcup_window(self.competition)
+            return
+
         if len(self.competition.teams) < 2:
             showerror(parent=self.team_window, title="Add Error", message="Please add at least 2 teams.")
             return
@@ -221,17 +239,8 @@ class TeamGUI:
         if isinstance(self.competition, Cup):
             show_cup_matches_window(self.competition)
         elif isinstance(self.competition, League):
+            self.competition.generate_matches()
             render_scoreboard(self.competition)
-        elif isinstance(self.competition, Worldcup):
-            for i in range(32):
-                team = Team()
-                team.set_name(str(i))
-                team.set_strength(i)
-                self.competition.add_team(team)
-            if len(self.competition.teams) != 32:
-                showerror(parent=self.team_window, title="Add Error", message="There should be 32 teams for world cup competition!")
-                return
-            render_worldcup_window(self.competition)
         else:
             print('Not a valid competition object.')
 

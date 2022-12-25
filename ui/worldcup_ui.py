@@ -1,14 +1,13 @@
 from tkinter import *
-from tkinter import ttk
 from tkinter.messagebox import showerror
 
 from ui.cup_ui import show_cup_matches_window
-from ui.match_data_ui import show_matches
 from ui.scoreboard_ui import render_scoreboard
 
 
 def render_16_stage(worldcup):
-    worldcup.simulate_groups_results()
+    if worldcup.is_simulation:
+        worldcup.simulate_groups_results()
     if not worldcup.groups_stage_completed():
         showerror(title="Add Error", message="GROUP STAGE NOT YET DONE")
         return
@@ -19,9 +18,9 @@ def render_16_stage(worldcup):
 def render_worldcup_window(worldcup):
     worldcup_window = Toplevel()
     worldcup_window.title('FIFA WORLD CUP')
+    worldcup_window.iconbitmap('icon.ico')
+    worldcup_window.resizable(False, False)
     groups_frame = Frame(worldcup_window)
-
-    worldcup.groups_draw()
 
     for i, group in enumerate(worldcup.groups):
         group_frame = create_group_frame(groups_frame, "GROUP " + chr(65 + i), group.teams, group)

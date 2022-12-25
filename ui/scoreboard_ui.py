@@ -6,7 +6,6 @@ from ui.utils_ui import center_window
 
 
 def render_scoreboard(league):
-    league.generate_matches()
     header_font = ('arial', 18, 'bold')
     team_font = ('arial', 16)
 
