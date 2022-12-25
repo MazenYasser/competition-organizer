@@ -103,6 +103,11 @@ def match_result(competition, teams):
     # Finding the match and setting the button to update the result of that match, then close the window
     for match in matches:
         if match.home_team.name == current_teams[0] and match.away_team.name == current_teams[1]:
+            # If there are a result
+            # Show the result in the entry
+            if match.isPlayed:
+                current_result = str(match.home_team_goals) + '-' + str(match.away_team_goals)
+                txt_result.insert(0, current_result)
             # Note: To make a lambda function perform multiple functions sequentially,
             # wrap the functions in a list in the body of the lambda function
             # If result_check flag is True, the result is submitted. If result_check flag is False, ...
