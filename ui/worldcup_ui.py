@@ -8,7 +8,7 @@ from ui.scoreboard_ui import render_scoreboard
 
 
 def render_16_stage(worldcup):
-    # worldcup.simulate_groups_results()
+    worldcup.simulate_groups_results()
     if not worldcup.groups_stage_completed():
         showerror(title="Add Error", message="GROUP STAGE NOT YET DONE")
         return

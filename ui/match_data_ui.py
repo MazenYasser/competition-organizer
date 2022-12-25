@@ -112,7 +112,7 @@ def show_league_teams_window(competition):
     btn_show_matches.pack()
     for team in competition.teams:
         league.insert(END, team.name)
-    competition.generate_matches()
+    # competition.generate_matches()   # TO BE REFACTORED
     mainloop()
 
 #If you want to test the code, run this function

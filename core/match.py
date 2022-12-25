@@ -1,20 +1,17 @@
-# import sys
-# sys.path.append('D:\Engineering\Fourth Year\Python\Tournament Organizer Project\Competation_Organizer')
 from core.team import Team
 
-class Match:
 
-    #Class Constructor
+class Match:
     def __init__(self, home_team, away_team):
         self.home_team = Team()
-        self.home_team= home_team
+        self.home_team = home_team
         self.away_team = Team()
-        self.away_team= away_team
+        self.away_team = away_team
         self.home_team_goals = 0
         self.away_team_goals = 0
-        self.winner= Team()
+        self.winner = Team()
         self.isPlayed = False
-        self.result=''
+        self.result = ''
     
     #Function documentation
     # Name: set_result
