@@ -219,7 +219,7 @@ class TeamGUI:
                 self.competition.is_simulation = True
                 for i in range(32):
                     team = Team()
-                    team.set_name(str(i))
+                    team.set_name("Team "+str(i))
                     team.set_strength(i)
                     self.competition.add_team(team)
             if len(self.competition.teams) != 32:
@@ -228,7 +228,7 @@ class TeamGUI:
                 return
             self.competition.groups_draw()
             for group in self.competition.groups:
-                group.generate_matches()
+                group.generate_matches(home_away_mode=False)
             render_worldcup_window(self.competition)
             return
 
