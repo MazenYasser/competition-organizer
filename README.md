@@ -56,22 +56,22 @@ Create different types of football competitions with end-to-end simulation, Type
 ## Usage-guide
 - Open the Application and you should be able to see the following menu.
 
-![Main_menu](https://ibb.co/R9GrPpy)
+![main](https://user-images.githubusercontent.com/57297865/209481989-689fcc7c-2fd5-4a1f-8fb8-ac8b38616e42.png)
 - Choose the competition which you want to create then you will be able to enter team.
 
-![Teams_menu](https://ibb.co/kKd7C96)
-![Teams_after](https://ibb.co/1Jntwh2)
+![team](https://user-images.githubusercontent.com/57297865/209481991-a4c7d3e7-29de-4571-8705-00b67e96d8e1.png)
+![teams_after](https://user-images.githubusercontent.com/57297865/209481992-557c475b-72a9-432d-941f-81b3c2fb9a1d.png)
 - For League Competitions you can see the scoreboard for the competition.
 
-![scoreboard](https://ibb.co/3YxLCkk)
+![scoreboard](https://user-images.githubusercontent.com/57297865/209481993-0dd0f30c-04ae-4bdd-b556-97e5c0582bf7.png)
 
 - Matches will be automatically generated then you can add result.
 
-![matches](https://ibb.co/9py08cH)
+![matches](https://user-images.githubusercontent.com/57297865/209481994-76a01587-8fc6-4062-8a5e-491f8b3720ce.png)
 
 - You can also create and simulate FIFA WORLD CUP.
 
-![worldcup](https://ibb.co/mF1xHqQ)
+![worldcup](https://user-images.githubusercontent.com/57297865/209481996-9f82ac40-41bb-4df5-8d27-78e7e6796c5e.png)
 
 
 
