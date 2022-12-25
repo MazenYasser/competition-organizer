@@ -13,7 +13,7 @@ class Match:
         self.isPlayed = False
         self.result = ''
     
-    #Function documentation
+    # Function documentation
     # Name: set_result
     # Arguments: home_team_goals, away_team_goals
     # Description: sets the result of the match according to the scored goals given as arguments

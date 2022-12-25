@@ -5,6 +5,7 @@ from tkinter import messagebox
 from core.cup import Cup
 from core.team import Team
 from core.league import League
+from ui.utils_ui import center_window
 
 
 def result_check(competition, result: str):
@@ -35,13 +36,14 @@ def show_matches(competition, team):
     """
     # Initializing the UI
     team_matches_window = Toplevel()
+    center_window(team_matches_window, 150, 210)
     matches_frame = Frame(team_matches_window)
     matches_scroll = Scrollbar(matches_frame, orient=VERTICAL)
     team_matches_box = Listbox(matches_frame, yscrollcommand=matches_scroll.set)
-    lbl = Label(team_matches_window, text='{} matches'.format(team))
+    lbl = Label(team_matches_window, text='{} Matches'.format(team))
     matches_scroll.config(command=team_matches_box.yview)
 
-    btn_add_result = Button(team_matches_window, height=1, text='ADD RESULT',
+    btn_add_result = Button(team_matches_window, height=1, text='Add Result',
                             command=lambda x=0: match_result(competition, team_matches_box.get(ANCHOR)))
 
     # Packing things
@@ -77,6 +79,7 @@ def match_result(competition, teams):
     """
     # Initializing the UI
     match_data_window = Toplevel()
+    center_window(match_data_window, 250, 50)
     result_frame = Frame(match_data_window)
     lbl_result = Label(result_frame, text='Result (Home-Away): ')
     txt_result = Entry(result_frame, bd=3)  # HomeGoals-AwayGoals
@@ -127,6 +130,7 @@ def match_result(competition, teams):
 def show_league_teams_window(competition):
 
     league_teams = Toplevel()
+    center_window(league_teams, w=150, h=210)
     lbl_league = Label(league_teams, text="League teams")
     listbox_frame = Frame(league_teams)
     league_scroll = Scrollbar(listbox_frame, orient=VERTICAL)
@@ -145,7 +149,6 @@ def show_league_teams_window(competition):
     btn_show_matches.pack()
     for team in competition.teams:
         league.insert(END, team.name)
-    competition.generate_matches()   # TO BE REFACTORED
     mainloop()
 
 # If you want to test the code, run this function
@@ -167,3 +170,5 @@ def test_code():
     league.add_team(t2)
     league.add_team(t3)
     show_league_teams_window(league)
+
+# test_code()

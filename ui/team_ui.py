@@ -3,21 +3,21 @@ from tkinter import ttk
 from tkinter import scrolledtext
 from tkinter.messagebox import *
 
-from core.competition import Competition
 from core.cup import Cup
 from core.league import League
 from core.team import Team
 from core.worldcup import Worldcup
 from ui.scoreboard_ui import render_scoreboard
 from ui.cup_ui import show_cup_matches_window
+from ui.utils_ui import center_window
 from ui.worldcup_ui import render_worldcup_window
 
 
 class TeamGUI:
 
-    font = ("Times New Roman", 25)
+    font = ("arial", 16)
 
-    def __init__(self, competition, width=1000, height=750):
+    def __init__(self, competition, width=400, height=500):
 
         self.competition = competition
         #   call a method to generate window only
@@ -35,9 +35,10 @@ class TeamGUI:
         #   View the main window to be appeared to user
         self.team_window.mainloop()
 
-    def generate_window(self, width=1000, height=720):
+    def generate_window(self, width=400, height=500):
         # creating the team ui windows.
         self.team_window = Toplevel()
+        center_window(self.team_window, width, height)
         self.team_window.geometry(str(width) + 'x' + str(height))
         self.team_window.title("Teams")
 
@@ -58,17 +59,18 @@ class TeamGUI:
                                                  textvariable=self.combo_choice, state="readonly")
         #   Modification Button
         self.modify_btn = Button(self.team_data_frame, text="Modify", command=lambda: self.modify_team(),
-                                 font=TeamGUI.font)
+                                 font=TeamGUI.font, height=1)
 
         #   Delete Button
         self.delete_btn = Button(self.team_data_frame, text="Delete", command=lambda: self.delete_team(),
-                                 font=TeamGUI.font)
+                                 font=TeamGUI.font, height=1)
 
         #   Addition Button
-        self.add_btn = Button(self.team_data_frame, text="Add", command=lambda: self.add_team(), font=TeamGUI.font)
+        self.add_btn = Button(self.team_data_frame, text="Add", command=lambda: self.add_team(), font=TeamGUI.font
+                              , height=1)
 
         #   Next Button
-        self.next_btn = Button(self.team_data_frame, text="Next", command=self.next_call, font=TeamGUI.font)
+        self.next_btn = Button(self.team_data_frame, text="Next", command=self.next_call, font=TeamGUI.font, height=1)
 
         ###     {summary_data_frame} part   ###
         #   Scrolled Text widget
@@ -88,8 +90,8 @@ class TeamGUI:
     def put_on_frames(self):
 
         #   Pack the main containers: Frames
-        self.team_data_frame.pack(side=LEFT)
-        self.summary_data_frame.pack(side=RIGHT)
+        self.team_data_frame.pack(side=TOP)
+        self.summary_data_frame.pack(side=BOTTOM)
 
         #   Pack {name} widgets
         self.team_name_lbl.pack()
@@ -112,7 +114,7 @@ class TeamGUI:
         self.next_btn.pack()
 
         #   Pack the scrolled text widget on its frame
-        self.scrltxt_summary_data.pack(side=RIGHT)
+        self.scrltxt_summary_data.pack()
 
     def refresh_page(self):
         self.update_teams_combox()
@@ -163,16 +165,13 @@ class TeamGUI:
                 # Show and delete the team which will be deleted
                 self.competition.remove_team(team)
                 # refresh page contents
-                self.refresh_page()
-                # Show a popup message to verify deletion
-                showinfo(title="Successful Deletion", message="Done !")
-                #  no more loop needed so break the loop
+                self.refresh_page()  # no more loop needed so break the loop
                 break
 
         # Check if the index_to_delete
-        if index_to_delete == len(self.competition.teams):
+        if index_to_delete > len(self.competition.teams):
             # If the loop is ended or the list is empty, just notify the user that is no data to delete
-            showinfo(title="Deletion info", message="No Team to delete")
+            showinfo(parent=self.team_window, title="Deletion info", message="No Team to delete")
 
     def add_team(self):
         #   Get the new team name
@@ -181,11 +180,11 @@ class TeamGUI:
         strength = self.team_strength_entry.get()
 
         if not self.name_is_valid(name):
-            showerror(title="Add Error", message="The team name is already used!")
+            showerror(parent=self.team_window, title="Add Error", message="The team name is invalid!")
             return
 
         if not self.strength_is_valid(strength):
-            showerror(title="Add Error", message="Invalid strength!")
+            showerror(parent=self.team_window, title="Add Error", message="Invalid strength!")
             return
 
         new_team = Team(name, int(strength))
@@ -194,6 +193,8 @@ class TeamGUI:
         self.refresh_page()
 
     def name_is_valid(self, name):
+        if name == '':
+            return False
         for team in self.competition.teams:
             if team.name.lower() == name.lower():
                 return False
@@ -204,70 +205,17 @@ class TeamGUI:
             return False
         return True
 
-
-    #   Core Method
-    #   method documentation:
-    #       Name:           modify_team
-    #       Parameters:     {self} object reference
-    #       Description:    Get a Team data from Entry {name}, {strength} element and
-    #                       Get the selected choice of the combobox list,
-    #                       Then update the value of the chose team element {name}, {strength}
-    #                       And refactor the {scrolled text} data
-    #       Return:         None
     def modify_team(self):
-        #   Get a copy of the choices list
-        combo_choice = list(self.team_modify_combobox['values'])
-        #   check if the list is not empty
-        if len(combo_choice) > 0:
-            #   Fetch new data from Ui get choice, new name to modify, new strength to modify
-            choice_to_modify = self.combo_choice.get()
-            name_to_modify = self.get_name().upper()
-            strength_to_modify = self.get_strength()
-
-            #   Check if the new name to modify if found
-            if name_to_modify not in [team[0] for team in TeamGUI.all_teams]:
-                #   Get the index of choice in combobox choices to be changed by the new values
-                index_to_modify = combo_choice.index(choice_to_modify)
-
-                #   >>>@Issue Competition remove_team() ?!??!?!?!??!?!
-                TeamGUI.competition.remove_team(TeamGUI.all_teams[index_to_modify])
-
-                #   >>>@Issue Competition add_team()
-                TeamGUI.all_teams[index_to_modify].name = name_to_modify
-                TeamGUI.all_teams[index_to_modify].strength = strength_to_modify
-                TeamGUI.competition.add_team(TeamGUI.all_teams[index_to_modify])
-
-                #   Modify the choice in Combobox
-                combo_choice[index_to_modify] = name_to_modify
-                #   Modify the choice name in the general list
-                TeamGUI.all_teams[index_to_modify][0] = name_to_modify
-                #   Modify the choice strength in the general list
-                TeamGUI.all_teams[index_to_modify][1] = strength_to_modify
-                #   Update the combobox list
-                self.team_modify_combobox['values'] = combo_choice
-                #   Update the scrollable text data with the modified team data
-                self.modify_board()
-
-                print("Modify Team")
-                #   A popup message to notify the user the task has been done successfully
-                showinfo(title="Successful Modification", message="Done !")
-            #   Check if the name to update is already used
-            else:
-                #   A popup message notifies the error
-                showerror(title="Error Modification", message="Can't modify team data, The new name is already used !")
-                #   Print the error message to console
-                print("Can't Modify this team, the name is already used...")
-        #   Check if the team to be modified is not found
-        else:
-            #   A popup message notifies the error
-            showinfo(title="Modification info", message="No element to Modify !")
-            #   Print the error message to console
-            print("No element to Modify...")
+        self.delete_team()
+        self.add_team()
 
     def __call__(self):
         return TeamGUI.all_teams
 
     def next_call(self):
+        if len(self.competition.teams) < 2:
+            showerror(parent=self.team_window, title="Add Error", message="Please add at least 2 teams.")
+            return
         self.team_window.destroy()
         if isinstance(self.competition, Cup):
             show_cup_matches_window(self.competition)
@@ -280,7 +228,7 @@ class TeamGUI:
                 team.set_strength(i)
                 self.competition.add_team(team)
             if len(self.competition.teams) != 32:
-                showerror(title="Add Error", message="There should be 32 teams for world cup competition!")
+                showerror(parent=self.team_window, title="Add Error", message="There should be 32 teams for world cup competition!")
                 return
             render_worldcup_window(self.competition)
         else:
