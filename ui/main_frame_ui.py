@@ -26,7 +26,7 @@ def create_worldcup():
     TeamGUI(competition=worldcup)
 
 
-if __name__ == '__main__':
+def run_application():
     root = Tk()
 
     center_window(root)
@@ -56,3 +56,4 @@ if __name__ == '__main__':
     button_frame.grid(row=2, column=0)
 
     mainloop()
+
