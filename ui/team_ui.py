@@ -52,6 +52,8 @@ class TeamGUI:
         #   Team {strength} part
         self.team_strength_lbl = Label(self.team_data_frame, text="Team Strength", font=TeamGUI.font)
         self.team_strength_entry = Entry(self.team_data_frame, font=TeamGUI.font, textvariable=self.team_strength)
+        if isinstance(self.competition, League):
+            self.team_strength_entry.config(state='disabled')
 
         #   Team modification part
         self.team_modify_lbl = Label(self.team_data_frame, text="Team To Modify", font=TeamGUI.font)
@@ -178,17 +180,22 @@ class TeamGUI:
         #   Get the new team name
         name = self.team_name.get()
         #   Get the new team Strength
+        
         strength = self.team_strength_entry.get()
 
         if not self.name_is_valid(name):
             showerror(parent=self.team_window, title="Add Error", message="The team name is invalid!")
             return
 
-        if not self.strength_is_valid(strength):
-            showerror(parent=self.team_window, title="Add Error", message="Invalid strength!")
-            return
+        if not isinstance(self.competition, League):
+            if not self.strength_is_valid(strength):
+                showerror(parent=self.team_window, title="Add Error", message="Invalid strength!")
+                return
 
-        new_team = Team(name, int(strength))
+        if not isinstance(self.competition, League):
+            new_team = Team(name, int(strength))
+        else:
+            new_team = Team(name)
         self.competition.add_team(new_team)
 
         self.refresh_page()
