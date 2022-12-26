@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from PIL import Image, ImageTk
 from core.league import League
 from core.cup import Cup
@@ -46,11 +47,15 @@ def run_application():
     league_button = Button(button_frame, width=35, text='Create League', font=FONT, command=create_league)
     cup_button = Button(button_frame, width=35, text='Create Cup', font=FONT, command=create_cup)
     world_cup_button = Button(button_frame, width=35, text='Create FIFA World Cup', font=FONT, command=create_worldcup)
+    about_button= Button(button_frame, width=35, text='About Us', font=FONT, 
+    command= lambda x=0: messagebox.showinfo(title='About Us', 
+    message='Al-Azhar University, Computer Engineering Students\nProject Team:\nAyman Saleh Zain Alabadeen\nAyman Abdelkader Abdelwanees\nMazen Yasser Mahmoud\nMohamed Magdy Abdelmoniem\nGithub Link:https://github.com/MoMagdy14/competition-organizer')
+    )
 
     league_button.grid(row=0, column=0)
     cup_button.grid(row=1, column=0)
     world_cup_button.grid(row=2, column=0)
-
+    about_button.grid(row=3, column=0)
     welcome_label.grid(row=0, column=0)
     logo_label.grid(row=1, column=0)
     button_frame.grid(row=2, column=0)

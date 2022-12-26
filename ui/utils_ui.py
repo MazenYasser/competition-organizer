@@ -1,4 +1,4 @@
-def center_window(window, w=430, h=350):
+def center_window(window, w=430, h=390):
     window.iconbitmap('icon.ico')
     window.resizable(False, False)
     # get screen width and height

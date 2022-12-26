@@ -28,7 +28,7 @@ def to_next_round(cup: Cup):
         render_next_group(cup)
     else:
         messagebox.showinfo("Cup Completed", f"Winner is: {cup.get_winner().name}")
-        sys.exit(0)
+        #sys.exit(0)
 
 
 def create_group_frame(parent_frame, label_text):

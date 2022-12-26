@@ -34,8 +34,12 @@ def show_matches(competition, team):
     :param team: str
     :return:
     """
+    
     # Initializing the UI
     team_matches_window = Toplevel()
+    if len(team) < 1:
+        messagebox.showerror(title="Error", message="Please select a team to show their matches.")
+        return
     center_window(team_matches_window, 150, 210)
     matches_frame = Frame(team_matches_window)
     matches_scroll = Scrollbar(matches_frame, orient=VERTICAL)
