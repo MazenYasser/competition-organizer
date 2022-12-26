@@ -101,8 +101,9 @@ class TeamGUI:
         self.team_name_entry.pack()
 
         #   Pack {strength} widgets
-        self.team_strength_lbl.pack()
-        self.team_strength_entry.pack()
+        if not isinstance(self.competition, League):
+            self.team_strength_lbl.pack()
+            self.team_strength_entry.pack()
 
         #   Pack modify label
         self.team_modify_lbl.pack()
@@ -136,10 +137,17 @@ class TeamGUI:
         self.scrltxt_summary_data.delete('1.0', END)
 
         #   Update the textbox data with the new data which is saved in class attribute {TeamGUI.all_teams}
-        self.scrltxt_summary_data.insert(INSERT,
+        if not isinstance(self.competition, League):
+            self.scrltxt_summary_data.insert(INSERT,
                                          f"Teams\t\tStrength"
                                          f"\n_______________________________\n"
                                          f"{self.generate_board_data()}")
+        else:
+            self.scrltxt_summary_data.insert(INSERT,
+                                         f"Teams"
+                                         f"\n_______________________________\n"
+                                         f"{self.generate_board_data()}")
+
         #   Re-disable Edit mode
         self.scrltxt_summary_data.config(state="disabled")
 
@@ -149,7 +157,10 @@ class TeamGUI:
         #   Loop for adding and appending the next team data
         for team in self.competition.teams:
             #   Append the next team data to the {data} to be returned
-            data = data + team.name + "\t\t" + str(team.strength) + "\n"
+            if not isinstance(self.competition, League):
+                data = data + team.name + "\t\t" + str(team.strength) + "\n"
+            else:
+                data = data + team.name +"\n"
         #   Return full string after generating the string representation of the class attribute {TeamGUI.all_teams}
         return data
 
